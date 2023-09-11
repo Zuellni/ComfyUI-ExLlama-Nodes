@@ -19,9 +19,9 @@ Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at https
 Generates a `string` based on the given `prompt` and max `tokens` for use with other nodes. Default values correspond to the `simple-1` preset from https://github.com/oobabooga/text-generation-webui. ExLlama isn't deterministic so the outputs may differ even with the same seed.
 
 ## Workflow
-![example](https://github.com/Zuellni/ComfyUI-ExLlama/assets/123005779/44a85d68-387d-438b-bef7-3c3409ce21e8)
+![example](https://github.com/Zuellni/ComfyUI-ExLlama/assets/123005779/092891b7-39d9-46b9-8a2c-c09634a158cb)
 
-The example above can be loaded in ComfyUI. Model used: https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ. Total VRAM usage hovering just below 5GB without any SD model loaded.
+The example above can be opened in ComfyUI. Model used: https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ. Total VRAM usage hovering just below 5GB without any SD model loaded.
 
 Some random outputs:
 - A vibrant underwater cityscape filled with colorful marine life, surrounded by sunken ruins from ancient civilizations.
