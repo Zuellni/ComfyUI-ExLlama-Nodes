@@ -21,7 +21,7 @@ Generates a `string` based on the given `prompt` and max `tokens` for use with o
 ## Example Workflow
 ![example](https://github.com/Zuellni/ComfyUI-ExLlama/assets/123005779/44a85d68-387d-438b-bef7-3c3409ce21e8)
 
-The image above can be loaded in ComfyUI. Some random outputs generated with it:
+The image above can be loaded in ComfyUI. Model: https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ. Some outputs:
 - A vibrant underwater cityscape filled with colorful marine life, surrounded by sunken ruins from ancient civilizations.
 - A romantic scene between two lovers during sunset, with flowers around them and birds flying overhead.
 - A steampunk-inspired portrait of Jane Austen, dressed in Victorian era clothing and holding a parasol.
