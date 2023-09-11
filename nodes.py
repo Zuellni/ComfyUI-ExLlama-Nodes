@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import torch
-from exllama.generator import ExLlamaGenerator
+from exllama.alt_generator import ExLlamaAltGenerator
 from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
 from exllama.tokenizer import ExLlamaTokenizer
 
@@ -31,14 +31,15 @@ class Generator:
     def generate(self, model, tokens, temp, top_k, top_p, typical_p, penalty, seed, prompt):
         torch.manual_seed(seed)
 
-        model.settings.temperature = temp
-        model.settings.top_k = top_k
-        model.settings.top_p = top_p
-        model.settings.typical = typical_p
-        model.settings.token_repetition_penalty_max = penalty
+        settings = ExLlamaAltGenerator.Settings()
+        settings.temperature = temp
+        settings.top_k = top_k
+        settings.top_p = top_p
+        settings.typical = typical_p
+        settings.token_repetition_penalty_max = penalty
 
-        output = model.generate_simple(prompt, tokens)
-        output = output[len(prompt) :].strip()
+        stop_conditions = [model.tokenizer.eos_token_id, model.tokenizer.newline_token_id]
+        output = model.generate(prompt, stop_conditions, tokens, settings).strip()
 
         print(output)
         return (output,)
@@ -71,5 +72,5 @@ class Loader:
 
         # sentencepiece requires a string
         tokenizer = ExLlamaTokenizer(str(model_dir / "tokenizer.model"))
-        generator = ExLlamaGenerator(model, tokenizer, cache)
+        generator = ExLlamaAltGenerator(model, tokenizer, cache)
         return (generator,)
