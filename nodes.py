@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import torch
@@ -15,7 +16,7 @@ class Generator:
             "required": {
                 "model": ("GPTQ",),
                 "tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
-                "temp": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
+                "temperature": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "min": 0, "max": 200}),
                 "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "typical_p": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
@@ -28,9 +29,10 @@ class Generator:
     CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "generate"
     OUTPUT_NODE = True
+    RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def generate(self, model, tokens, temp, top_k, top_p, typical_p, penalty, seed, prompt):
+    def generate(self, model, tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
         progress = ProgressBar(tokens)
 
         def update(value):
@@ -38,7 +40,7 @@ class Generator:
             progress.update(value)
 
         settings = ExLlamaAltGenerator.Settings()
-        settings.temperature = temp
+        settings.temperature = temperature
         settings.top_k = top_k
         settings.top_p = top_p
         settings.typical = typical_p
@@ -56,6 +58,7 @@ class Generator:
             output += chunk
             progress.update(1)
 
+        progress.update_absolute(tokens)
         output = output.strip()
         print(output)
         return (output,)
