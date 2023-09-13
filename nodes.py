@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import torch
+from comfy.model_management import throw_exception_if_processing_interrupted
+from comfy.utils import ProgressBar
 from exllama.alt_generator import ExLlamaAltGenerator
 from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
 from exllama.tokenizer import ExLlamaTokenizer
@@ -15,9 +17,18 @@ class Generator:
                 "tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
                 "temp": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "min": 0, "max": 200}),
-                "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
-                "typical_p": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
-                "penalty": ("FLOAT", {"default": 1.15, "min": 1.0, "max": 2.0, "step": 0.01}),
+                "top_p": (
+                    "FLOAT",
+                    {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "typical_p": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "penalty": (
+                    "FLOAT",
+                    {"default": 1.15, "min": 1.0, "max": 2.0, "step": 0.01},
+                ),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**64 - 1}),
                 "prompt": ("STRING", {"default": "", "multiline": True}),
             },
@@ -29,7 +40,11 @@ class Generator:
     RETURN_TYPES = ("STRING",)
 
     def generate(self, model, tokens, temp, top_k, top_p, typical_p, penalty, seed, prompt):
-        torch.manual_seed(seed)
+        progress = ProgressBar(tokens)
+
+        def update(value):
+            throw_exception_if_processing_interrupted()
+            progress.update(value)
 
         settings = ExLlamaAltGenerator.Settings()
         settings.temperature = temp
@@ -38,9 +53,19 @@ class Generator:
         settings.typical = typical_p
         settings.token_repetition_penalty_max = penalty
 
+        torch.manual_seed(seed)
         stop_conditions = [model.tokenizer.eos_token_id, model.tokenizer.newline_token_id]
-        output = model.generate(prompt, stop_conditions, tokens, settings).strip()
+        model.begin_stream(prompt, stop_conditions, tokens, settings)
 
+        eos = False
+        output = ""
+
+        while not eos:
+            chunk, eos = model.stream()
+            output += chunk
+            progress.update(1)
+
+        output = output.strip()
         print(output)
         return (output,)
 
