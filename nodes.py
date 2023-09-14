@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 import torch
@@ -14,7 +13,7 @@ class Generator:
         return {
             "required": {
                 "model": ("GPTQ",),
-                "tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
+                "max_tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
                 "temperature": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "min": 0, "max": 200}),
                 "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
@@ -31,7 +30,7 @@ class Generator:
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def generate(self, model, tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
+    def generate(self, model, max_tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
         settings = ExLlamaAltGenerator.Settings()
         settings.temperature = temperature
         settings.top_k = top_k
@@ -41,20 +40,20 @@ class Generator:
 
         torch.manual_seed(seed)
         stop_conditions = [model.tokenizer.eos_token_id, model.tokenizer.newline_token_id]
-        model.begin_stream(prompt.strip(), stop_conditions, tokens, settings)
+        model.begin_stream(prompt.strip(), stop_conditions, max_tokens, settings)
 
-        progress = ProgressBar(tokens)
+        progress = ProgressBar(max_tokens)
         eos = False
-        output = ""
+        text = ""
 
         while not eos:
             chunk, eos = model.stream()
-            output += chunk
+            text += chunk
             progress.update(1)
 
-        output = output.strip()
-        print("\n[\033[94mExLlama\033[0m]: " + output, end="\n\n")
-        return (output,)
+        text = text.strip()
+        print("\n[\033[94mExLlama\033[0m]: " + text, end="\n\n")
+        return (text,)
 
 
 class Loader:
