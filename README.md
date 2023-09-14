@@ -20,13 +20,13 @@ pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-
 Comes with the following nodes:
 
 ### ExLlama Loader
-Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at https://huggingface.co/TheBloke.  
+Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at [Hugging Face](https://huggingface.co/TheBloke).  
 ExLlama allocates memory according to `max_seq_len`. Lowering it is a good way to save on GPU RAM.  
 It's not possible to offload the model to CPU RAM currently.
 
 ### ExLlama Generator
 Generates a `string` based on the given `prompt` for use with other nodes.  
-Default parameter values correspond to the `simple-1` preset from https://github.com/oobabooga/text-generation-webui.  
+Default parameter values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).  
 ExLlama isn't deterministic, so the outputs may differ even with the same seed.
 
 ## Example
