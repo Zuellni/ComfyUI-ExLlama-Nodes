@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import torch
-from comfy.model_management import throw_exception_if_processing_interrupted
 from comfy.utils import ProgressBar
 from exllama.alt_generator import ExLlamaAltGenerator
 from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
@@ -33,12 +32,6 @@ class Generator:
     RETURN_TYPES = ("STRING",)
 
     def generate(self, model, tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
-        progress = ProgressBar(tokens)
-
-        def update(value):
-            throw_exception_if_processing_interrupted()
-            progress.update(value)
-
         settings = ExLlamaAltGenerator.Settings()
         settings.temperature = temperature
         settings.top_k = top_k
@@ -48,8 +41,9 @@ class Generator:
 
         torch.manual_seed(seed)
         stop_conditions = [model.tokenizer.eos_token_id, model.tokenizer.newline_token_id]
-        model.begin_stream(prompt, stop_conditions, tokens, settings)
+        model.begin_stream(prompt.strip(), stop_conditions, tokens, settings)
 
+        progress = ProgressBar(tokens)
         eos = False
         output = ""
 
@@ -58,9 +52,8 @@ class Generator:
             output += chunk
             progress.update(1)
 
-        progress.update_absolute(tokens)
         output = output.strip()
-        print(output)
+        print("\n[\033[94mExLlama\033[0m]: " + output, end="\n\n")
         return (output,)
 
 
