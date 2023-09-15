@@ -9,6 +9,11 @@ Clone the repository to `custom_nodes` in your ComfyUI directory:
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 ```
 
+Install the requirements:
+```
+pip install -r requirements.txt
+```
+
 Install the latest pre-built ExLlama wheel from https://github.com/jllllll/exllama/releases.  
 Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.
 
