@@ -2,6 +2,7 @@ from pathlib import Path
 
 import torch
 from comfy.utils import ProgressBar
+from comfy.model_management import soft_empty_cache
 from exllama.alt_generator import ExLlamaAltGenerator
 from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
 from exllama.tokenizer import ExLlamaTokenizer
@@ -73,6 +74,7 @@ class Loader:
 
     def load(self, model_dir, max_seq_len):
         model_dir = Path(model_dir).expanduser()
+        soft_empty_cache()
 
         config = ExLlamaConfig(model_dir / "config.json")
         config.model_path = model_dir.glob("*.safetensors")
