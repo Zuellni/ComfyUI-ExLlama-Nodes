@@ -9,8 +9,9 @@ Clone the repository to `custom_nodes` in your ComfyUI directory:
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 ```
 
-Install the latest pre-built ExLlama wheels from https://github.com/jllllll/exllama/releases.  
-Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.  
+Install the latest pre-built ExLlama wheel from https://github.com/jllllll/exllama/releases.  
+Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.
+
 Example for Windows with Python 3.10 and CUDA 11.7:
 ```
 pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu117-cp310-cp310-win_amd64.whl
