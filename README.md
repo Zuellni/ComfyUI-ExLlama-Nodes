@@ -32,7 +32,7 @@ Default values correspond to the `simple-1` preset from [text-generation-webui](
 ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 
 ## Example
-Workflow Can be opened directly in ComfyUI.  
+Workflow can be opened directly in ComfyUI.  
 Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ)
 
 Generated output:
