@@ -1,7 +1,6 @@
 # ExLlama nodes for ComfyUI
 A simple prompt generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlama](https://github.com/turboderp/exllama).  
-Outputs are printed in the console, sadly I have no idea how to append them to metadata or display in the UI.  
-Suggestions welcome.
+Outputs are printed in the console, if you'd like to see them in the UI you can use the `Show Text` node from [here](https://github.com/pythongosssss/ComfyUI-Custom-Scripts).
 
 ## Installation
 Clone the repository to `custom_nodes` in your ComfyUI directory and install dependencies:
@@ -10,7 +9,7 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 pip install -r requirements.txt
 ```
 
-Install the latest pre-built ExLlama wheel from https://github.com/jllllll/exllama/releases.  
+Install the latest pre-built ExLlama wheel from [here](https://github.com/jllllll/exllama/releases).  
 Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.
 
 Example for Windows with Python 3.10 and CUDA 11.7:
@@ -32,8 +31,8 @@ Default values correspond to the `simple-1` preset from [text-generation-webui](
 ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 
 ## Example
-Workflow can be opened directly in ComfyUI.  
-Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ)
+The workflow can be opened directly in ComfyUI.  
+Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
 Generated output:
 ```
