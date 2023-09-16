@@ -33,9 +33,4 @@ ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), 
 The workflow can be opened directly in ComfyUI.  
 Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
-Generated output:
-```
-A serene Japanese garden inspired by Zen philosophy, featuring intricate stonework and minimalist design elements.
-```
-
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/e5956c9a-36f7-4674-9737-2589727bf73d)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/2a8c71b2-3014-49b8-9252-29a30eba01c9)
