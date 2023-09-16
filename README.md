@@ -4,13 +4,9 @@ Outputs are printed in the console, sadly I have no idea how to append them to m
 Suggestions welcome.
 
 ## Installation
-Clone the repository to `custom_nodes` in your ComfyUI directory:
+Clone the repository to `custom_nodes` in your ComfyUI directory and install dependencies:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
-```
-
-Install the requirements:
-```
 pip install -r requirements.txt
 ```
 
@@ -36,6 +32,12 @@ Default values correspond to the `simple-1` preset from [text-generation-webui](
 ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 
 ## Example
-The workflow Can be loaded directly in ComfyUI.
+Workflow Can be opened directly in ComfyUI.  
+Model used: https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama/assets/123005779/005df502-9986-444c-b736-448b305e329c)
+Generated output:
+```
+A serene Japanese garden inspired by Zen philosophy, featuring intricate stonework and minimalist design elements.
+```
+
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/e5956c9a-36f7-4674-9737-2589727bf73d)
