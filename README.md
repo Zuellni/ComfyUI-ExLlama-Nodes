@@ -30,10 +30,10 @@ Default values correspond to the `simple-1` preset from [text-generation-webui](
 ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 
 ### Previewer
-Displays generated prompts in the UI.
+Displays generated outputs in the UI.
 
 ## Workflow
 Can be opened directly in ComfyUI.  
 Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/2a8c71b2-3014-49b8-9252-29a30eba01c9)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/c47e84da-93b0-4d58-ba93-fbfa0ce08f85)
