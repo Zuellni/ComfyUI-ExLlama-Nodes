@@ -1,6 +1,5 @@
 # ExLlama nodes for ComfyUI
-A simple prompt generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlama](https://github.com/turboderp/exllama).  
-Outputs are printed in the console, if you'd like to see them in the UI you can use the `Show Text` node from [here](https://github.com/pythongosssss/ComfyUI-Custom-Scripts).
+A simple prompt generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlama](https://github.com/turboderp/exllama).
 
 ## Installation
 Clone the repository to `custom_nodes` in your ComfyUI directory and install dependencies:

@@ -32,6 +32,11 @@ class Generator:
     RETURN_TYPES = ("STRING",)
 
     def generate(self, model, max_tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
+        prompt = prompt.strip()
+
+        if not prompt:
+            return ("",)
+
         settings = ExLlamaAltGenerator.Settings()
         settings.temperature = temperature
         settings.top_k = top_k
@@ -41,7 +46,7 @@ class Generator:
 
         torch.manual_seed(seed)
         stop_conditions = [model.tokenizer.eos_token_id, model.tokenizer.newline_token_id]
-        model.begin_stream(prompt.strip(), stop_conditions, max_tokens, settings)
+        model.begin_stream(prompt, stop_conditions, max_tokens, settings)
 
         progress = ProgressBar(max_tokens)
         eos = False
@@ -49,12 +54,11 @@ class Generator:
 
         while not eos:
             chunk, eos = model.stream()
-            text += chunk
             progress.update(1)
+            text += chunk
 
         text = text.strip()
-        print("\n[\033[94mExLlama\033[0m]: " + text, end="\n\n")
-        return (text,)
+        return {"ui": {"text": text}, "result": (text,)}
 
 
 class Loader:

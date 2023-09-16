@@ -9,3 +9,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "ZuellniExLlamaGenerator": "ExLlama Generator",
     "ZuellniExLlamaLoader": "ExLlama Loader",
 }
+
+WEB_DIRECTORY = "."
