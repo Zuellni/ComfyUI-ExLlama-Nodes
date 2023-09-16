@@ -9,7 +9,7 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 pip install -r requirements.txt
 ```
 
-Install the latest pre-built ExLlama wheel from [here](https://github.com/jllllll/exllama/releases).  
+Install the latest pre-built ExLlama wheel from [here](https://github.com/jllllll/exllama/releases/latest).  
 Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.
 
 Example for Windows with Python 3.10 and CUDA 11.7:
