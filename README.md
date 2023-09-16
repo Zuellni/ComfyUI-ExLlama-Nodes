@@ -33,7 +33,7 @@ ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), 
 
 ## Example
 Workflow Can be opened directly in ComfyUI.  
-Model used: https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ
+Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ)
 
 Generated output:
 ```
