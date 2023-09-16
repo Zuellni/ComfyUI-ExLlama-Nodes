@@ -27,7 +27,6 @@ class Generator:
 
     CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "generate"
-    OUTPUT_NODE = True
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
@@ -58,7 +57,7 @@ class Generator:
             text += chunk
 
         text = text.strip()
-        return {"ui": {"text": [text]}, "result": (text,)}
+        return (text,)
 
 
 class Loader:
@@ -91,3 +90,17 @@ class Loader:
         tokenizer = ExLlamaTokenizer(str(model_dir / "tokenizer.model"))
         generator = ExLlamaAltGenerator(model, tokenizer, cache)
         return (generator,)
+
+
+class Previewer:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {"required": {"text": ("STRING", {"forceInput": True})}}
+
+    CATEGORY = "Zuellni/ExLlama"
+    FUNCTION = "preview"
+    OUTPUT_NODE = True
+    RETURN_TYPES = ()
+
+    def preview(self, text):
+        return {"ui": {"text": [text]}}

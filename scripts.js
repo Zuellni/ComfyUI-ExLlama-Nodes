@@ -4,9 +4,9 @@ import { app } from "../../../scripts/app.js";
 import { ComfyWidgets } from "../../../scripts/widgets.js";
 
 app.registerExtension({
-	name: "Zuellni.ExLlama.Generator",
+	name: "ZuellniExLlamaPreviewer",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.name === "ZuellniExLlamaGenerator") {
+		if (nodeData.name === "ZuellniExLlamaPreviewer") {
 			const onExecuted = nodeType.prototype.onExecuted;
 
 			nodeType.prototype.onExecuted = function (message) {

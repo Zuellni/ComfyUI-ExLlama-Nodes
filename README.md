@@ -19,18 +19,21 @@ pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-
 ## Nodes
 Comes with the following nodes:
 
-### ExLlama Loader
+### Loader
 Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at [Hugging Face](https://huggingface.co/TheBloke).  
 ExLlama allocates [memory](https://github.com/turboderp/exllama/issues/259) according to `max_seq_len`. Lowering it is a good way to save on GPU RAM.  
 It's currently not possible to [offload](https://github.com/turboderp/exllama/issues/177) the model to CPU RAM.
 
-### ExLlama Generator
+### Generator
 Generates a `string` based on the given `prompt` for use with other nodes.  
 Default values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).  
 ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 
-## Example
-The workflow can be opened directly in ComfyUI.  
+### Previewer
+Displays generated prompts in the UI.
+
+## Workflow
+Can be opened directly in ComfyUI.  
 Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
 ![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/2a8c71b2-3014-49b8-9252-29a30eba01c9)

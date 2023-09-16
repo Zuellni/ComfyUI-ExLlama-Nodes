@@ -1,13 +1,15 @@
-from .nodes import Generator, Loader
+from .nodes import Generator, Loader, Previewer
 
 NODE_CLASS_MAPPINGS = {
-    "ZuellniExLlamaGenerator": Generator,
     "ZuellniExLlamaLoader": Loader,
+    "ZuellniExLlamaGenerator": Generator,
+    "ZuellniExLlamaPreviewer": Previewer,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "ZuellniExLlamaGenerator": "ExLlama Generator",
     "ZuellniExLlamaLoader": "ExLlama Loader",
+    "ZuellniExLlamaGenerator": "ExLlama Generator",
+    "ZuellniExLlamaPreviewer": "ExLlama Previewer",
 }
 
 WEB_DIRECTORY = "."
