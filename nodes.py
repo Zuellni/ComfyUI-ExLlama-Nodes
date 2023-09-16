@@ -58,7 +58,7 @@ class Generator:
             text += chunk
 
         text = text.strip()
-        return {"ui": {"text": text}, "result": (text,)}
+        return {"ui": {"text": [text]}, "result": (text,)}
 
 
 class Loader:

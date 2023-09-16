@@ -1,3 +1,5 @@
+// Copied from https://github.com/pythongosssss/ComfyUI-Custom-Scripts/blob/main/web/js/showText.js
+
 import { app } from "../../../scripts/app.js";
 import { ComfyWidgets } from "../../../scripts/widgets.js";
 
@@ -26,7 +28,7 @@ app.registerExtension({
 
 					widget.inputEl.readOnly = true;
 					widget.inputEl.style.opacity = 0.7;
-					widget.value = message.text.join("");
+					widget.value = message.text;
 
 					requestAnimationFrame(() => {
 						const size = this.computeSize();
