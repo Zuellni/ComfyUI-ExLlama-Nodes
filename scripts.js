@@ -23,27 +23,12 @@ app.registerExtension({
 						this.widgets.length = pos;
 					}
 
-					const string = ["STRING", { multiline: true }]
+					const string = ["STRING", { multiline: true }];
 					const widget = ComfyWidgets["STRING"](this, "text", string, app).widget;
 
 					widget.inputEl.readOnly = true;
 					widget.inputEl.style.opacity = 0.7;
 					widget.value = message.text;
-
-					requestAnimationFrame(() => {
-						const size = this.computeSize();
-
-						if (size[0] < this.size[0]) {
-							size[0] = this.size[0];
-						}
-
-						if (size[1] < this.size[1]) {
-							size[1] = this.size[1];
-						}
-
-						this.onResize?.(size);
-						app.graph.setDirtyCanvas(true, false);
-					});
 				}
 			};
 		}
