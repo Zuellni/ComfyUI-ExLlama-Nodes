@@ -57,6 +57,7 @@ class Generator:
             text += chunk
 
         text = text.strip()
+        print(text)
         return (text,)
 
 
