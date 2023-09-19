@@ -26,4 +26,4 @@ Previewer | Displays generated outputs in the UI.
 ## Workflow
 Can be opened directly in ComfyUI. Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/c47e84da-93b0-4d58-ba93-fbfa0ce08f85)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/91fc6b64-3734-456b-975d-ee0b77386841)
