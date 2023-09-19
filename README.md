@@ -20,9 +20,12 @@ pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-
 Comes with the following nodes:
 
 ### Loader
-Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at [Hugging Face](https://huggingface.co/TheBloke).  
+Used to load 4-bit GPTQ Llama/2 models. You can find a lot of them over at [Hugging Face](https://huggingface.co/TheBloke).
+
+You should either clone the model repository or download all the files in it manually, then point to the directory in `model_dir`. The `model.safetensors` file on its own is not enough to work.
+
 ExLlama allocates [memory](https://github.com/turboderp/exllama/issues/259) according to `max_seq_len`. Lowering it is a good way to save on GPU RAM.  
-It's currently not possible to [offload](https://github.com/turboderp/exllama/issues/177) the model to CPU RAM.
+It's currently not possible to [offload](https://github.com/turboderp/exllama/issues/177) the models to CPU RAM.
 
 ### Generator
 Generates a `string` based on the given `prompt` for use with other nodes.  
