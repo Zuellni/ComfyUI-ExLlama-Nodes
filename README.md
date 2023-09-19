@@ -19,11 +19,11 @@ python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.1
 ## Nodes
 Name | Description
 :--- | :---
-Loader | Loads 4-bit GPTQ Llama/2 models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repository or download all the files in it to an empty directory, then point to it in `model_dir`. `model.safetensors` won't work on its own.<br><br>To load a LoRA specify its directory in `lora_dir`. It should contain `adapter_model.bin` and `adapter_config.json`.<br><br>ExLlama allocates memory based on `max_seq_len`. Lowering it is a good way to save on VRAM. It's currently not possible to [offload](https://github.com/turboderp/exllama/issues/177) the model to RAM.
+Loader | Loads 4-bit GPTQ Llama/2 models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repository or download all the files in it to an empty directory, then point to it in `model_dir`. The `model.safetensors` file won't work on its own.<br><br>Similarly, to load a LoRA specify its directory in `lora_dir`. It should contain `adapter_model.bin` and `adapter_config.json`.<br><br>ExLlama allocates memory based on `max_seq_len`. Lowering it is a good way to save on VRAM. It's currently not possible to [offload](https://github.com/turboderp/exllama/issues/177) the model to RAM.
 Generator | Returns a `string` based on the given `prompt` for use with other nodes. Default values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).<br><br>ExLlama isn't [deterministic](https://github.com/turboderp/exllama/issues/201), so the outputs may differ even with the same seed.
 Previewer | Displays generated outputs in the UI.
 
 ## Workflow
-Can be opened directly in ComfyUI. Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
+Can be loaded directly in ComfyUI. Model used: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
 ![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/91fc6b64-3734-456b-975d-ee0b77386841)
