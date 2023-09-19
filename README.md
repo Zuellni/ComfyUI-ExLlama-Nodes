@@ -5,7 +5,7 @@ A simple prompt generator for [ComfyUI](https://github.com/comfyanonymous/ComfyU
 Clone the repository to `custom_nodes` in your ComfyUI directory and install dependencies:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Install the latest pre-built ExLlama wheel from [here](https://github.com/jllllll/exllama/releases/latest).  
@@ -13,7 +13,7 @@ Choose the version matching your platform, Python, and PyTorch CUDA/ROCm.
 
 Example for Windows with Python 3.10 and CUDA 11.8 which should match the portable ComfyUI build:
 ```
-pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu118-cp310-cp310-win_amd64.whl
+python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu118-cp310-cp310-win_amd64.whl
 ```
 
 ## Nodes
