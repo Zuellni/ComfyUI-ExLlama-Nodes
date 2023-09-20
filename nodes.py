@@ -16,12 +16,12 @@ try:
     from exllama.tokenizer import ExLlamaTokenizer
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        f"\n{Fore.RED}ExLlama package not installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
+        f"\n{Fore.RED}ExLlama not installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
         f"{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
     )
 except ImportError:
     raise ImportError(
-        f"\n{Fore.RED}Wrong version of ExLlama installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
+        f"\n{Fore.RED}Wrong ExLlama version installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
         f"{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
     )
 
@@ -103,7 +103,7 @@ class Generator:
 
         progress.update_absolute(max_tokens)
         text = text.strip()
-        print(Fore.CYAN + text + Fore.RESET + "\n")
+        print(f"{Fore.GREEN}ExLlama: {Fore.CYAN}{text}{Fore.RESET}\n")
 
         return (text,)
 
