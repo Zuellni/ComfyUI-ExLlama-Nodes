@@ -8,8 +8,8 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 python -m pip install -r requirements.txt
 ```
 
-If you see any errors related to ExLlama while loading, you should manually install the wheel matching your system from [here](https://github.com/jllllll/exllama/releases/latest).  
-For example, on Windows with Python 3.11 and PyTorch CUDA 12.1, you would install:
+If you see any errors related to ExLlama while loading the nodes, you should manually install the wheel matching your system from [here](https://github.com/jllllll/exllama/releases/latest).  
+For example, on Windows with Python 3.11 and PyTorch CUDA 12.1, you would use:
 ```
 python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu121-cp311-cp311-win_amd64.whl
 ```
