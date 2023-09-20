@@ -8,17 +8,10 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 python -m pip install -r requirements.txt
 ```
 
-Next, install the latest pre-built ExLlama wheel from https://github.com/jllllll/exllama/releases/latest.  
-Choose the version matching your system, Python, and PyTorch CUDA/ROCm.
-
-Example for Windows with Python 3.10 and CUDA 11.8, which should match the portable ComfyUI build:
+ExLlama for CUDA 11.8 is installed by default. It should be compatible with the latest portable build of ComfyUI.  
+If you see an error while loading, you should manually install the version matching your system from [here](https://github.com/jllllll/exllama/releases/latest). For example:
 ```
-python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu118-cp310-cp310-win_amd64.whl
-```
-
-You can use the following command to check what you have:
-```
-python -c "import platform; import torch; print(f'Python: {platform.python_version()}, CUDA: {torch.version.cuda}')"
+python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu121-cp311-cp311-win_amd64.whl
 ```
 
 ## Nodes

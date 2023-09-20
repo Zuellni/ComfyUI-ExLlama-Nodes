@@ -1,12 +1,29 @@
 from pathlib import Path
+from platform import sys
 
 import torch
+from colorama import Fore
 from comfy.model_management import soft_empty_cache
 from comfy.utils import ProgressBar
-from exllama.alt_generator import ExLlamaAltGenerator
-from exllama.lora import ExLlamaLora
-from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
-from exllama.tokenizer import ExLlamaTokenizer
+
+cu = "cu" + torch.version.cuda.replace(".", "")
+cp = f"cp{sys.version_info.major}{sys.version_info.minor}"
+
+try:
+    from exllama.alt_generator import ExLlamaAltGenerator
+    from exllama.lora import ExLlamaLora
+    from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
+    from exllama.tokenizer import ExLlamaTokenizer
+except ModuleNotFoundError:
+    raise ModuleNotFoundError(
+        f"\n{Fore.RED}ExLlama package not installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
+        f"{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
+    )
+except ImportError:
+    raise ImportError(
+        f"\n{Fore.RED}Wrong version of ExLlama installed. Get {Fore.CYAN}{cu}-{cp}{Fore.RED} from:\n"
+        f"{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
+    )
 
 
 class Generator:
@@ -86,7 +103,7 @@ class Generator:
 
         progress.update_absolute(max_tokens)
         text = text.strip()
-        print(text)
+        print(Fore.CYAN + text + Fore.RESET + "\n")
 
         return (text,)
 
