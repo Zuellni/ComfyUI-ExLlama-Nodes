@@ -32,7 +32,19 @@ class Generator:
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def generate(self, model, stop_on_newline, max_tokens, temperature, top_k, top_p, typical_p, penalty, seed, prompt):
+    def generate(
+        self,
+        model,
+        stop_on_newline,
+        max_tokens,
+        temperature,
+        top_k,
+        top_p,
+        typical_p,
+        penalty,
+        seed,
+        prompt,
+    ):
         progress = ProgressBar(max_tokens)
         prompt = prompt.strip()
         torch.manual_seed(seed)
@@ -40,23 +52,28 @@ class Generator:
         if not prompt:
             return ("",)
 
-        settings = ExLlamaAltGenerator.Settings()
-        settings.temperature = temperature
-        settings.top_k = top_k
-        settings.top_p = top_p
-        settings.typical = typical_p
-        settings.token_repetition_penalty_max = penalty
-        stop_conditions = [model.tokenizer.eos_token_id]
+        model["settings"].temperature = temperature
+        model["settings"].top_k = top_k
+        model["settings"].top_p = top_p
+        model["settings"].typical = typical_p
+        model["settings"].token_repetition_penalty_max = penalty
+        stop_conditions = [model["generator"].tokenizer.eos_token_id]
 
         if stop_on_newline:
-            stop_conditions.append(model.tokenizer.newline_token_id)
+            stop_conditions.append(model["generator"].tokenizer.newline_token_id)
 
-        model.begin_stream(prompt, stop_conditions, max_tokens, settings)
+        model["generator"].begin_stream(
+            prompt=prompt,
+            stop_conditions=stop_conditions,
+            max_new_tokens=max_tokens,
+            gen_settings=model["settings"],
+        )
+
         eos = False
         text = ""
 
         while not eos:
-            chunk, eos = model.stream()
+            chunk, eos = model["generator"].stream()
             progress.update(1)
             text += chunk
 
@@ -94,15 +111,16 @@ class Loader:
         cache = ExLlamaCache(model)
         tokenizer = ExLlamaTokenizer(str(model_dir / "tokenizer.model"))
         generator = ExLlamaAltGenerator(model, tokenizer, cache)
+        settings = ExLlamaAltGenerator.Settings()
 
         if lora_dir:
             lora_dir = Path(lora_dir).expanduser()
-            lora_config = lora_dir / "adapter_config.json"
+            lora_config = str(lora_dir / "adapter_config.json")
             lora_model = str(lora_dir / "adapter_model.bin")
             lora = ExLlamaLora(model, lora_config, lora_model)
-            generator.lora = lora
+            settings.lora = lora
 
-        return (generator,)
+        return ({"generator": generator, "settings": settings},)
 
 
 class Previewer:
