@@ -9,7 +9,8 @@ python -m pip install -r requirements.txt
 ```
 
 ExLlama for CUDA 11.8 is installed by default. It should be compatible with the latest portable build of ComfyUI.  
-If you see an error while loading, you should manually install the version matching your system from [here](https://github.com/jllllll/exllama/releases/latest). For example:
+If you see an error while loading, you should manually install the version matching your system from [here](https://github.com/jllllll/exllama/releases/latest).  
+For example, on Windows with Python 3.11 and PyTorch CUDA 12.1, you would install:
 ```
 python -m pip install https://github.com/jllllll/exllama/releases/download/0.0.17/exllama-0.0.17+cu121-cp311-cp311-win_amd64.whl
 ```
