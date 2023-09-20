@@ -1,8 +1,8 @@
 from pathlib import Path
 
 import torch
-from comfy.utils import ProgressBar
 from comfy.model_management import soft_empty_cache
+from comfy.utils import ProgressBar
 from exllama.alt_generator import ExLlamaAltGenerator
 from exllama.lora import ExLlamaLora
 from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
