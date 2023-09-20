@@ -15,6 +15,7 @@ class Generator:
         return {
             "required": {
                 "model": ("GPTQ",),
+                "lora_dir": ("STRING", {"default": ""}),
                 "stop_on_newline": ([False, True], {"default": False}),
                 "max_tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
                 "temperature": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
@@ -35,6 +36,7 @@ class Generator:
     def generate(
         self,
         model,
+        lora_dir,
         stop_on_newline,
         max_tokens,
         temperature,
@@ -52,34 +54,40 @@ class Generator:
         if not prompt:
             return ("",)
 
-        model["settings"].temperature = temperature
-        model["settings"].top_k = top_k
-        model["settings"].top_p = top_p
-        model["settings"].typical = typical_p
-        model["settings"].token_repetition_penalty_max = penalty
-        stop_conditions = [model["generator"].tokenizer.eos_token_id]
+        settings = ExLlamaAltGenerator.Settings()
+        settings.temperature = temperature
+        settings.top_k = top_k
+        settings.top_p = top_p
+        settings.typical = typical_p
+        settings.token_repetition_penalty_max = penalty
+
+        if lora_dir:
+            lora_dir = Path(lora_dir).expanduser()
+            lora_config = str(lora_dir / "adapter_config.json")
+            lora_model = str(lora_dir / "adapter_model.bin")
+            lora = ExLlamaLora(model.model, lora_config, lora_model)
+            settings.lora = lora
+        else:
+            settings.lora = None
+
+        stop_conditions = [model.tokenizer.eos_token_id]
 
         if stop_on_newline:
-            stop_conditions.append(model["generator"].tokenizer.newline_token_id)
+            stop_conditions += [model.tokenizer.newline_token_id]
 
-        model["generator"].begin_stream(
-            prompt=prompt,
-            stop_conditions=stop_conditions,
-            max_new_tokens=max_tokens,
-            gen_settings=model["settings"],
-        )
-
+        model.begin_stream(prompt, stop_conditions, max_tokens, settings)
         eos = False
         text = ""
 
         while not eos:
-            chunk, eos = model["generator"].stream()
+            chunk, eos = model.stream()
             progress.update(1)
             text += chunk
 
         progress.update_absolute(max_tokens)
         text = text.strip()
         print(text)
+
         return (text,)
 
 
@@ -89,7 +97,6 @@ class Loader:
         return {
             "required": {
                 "model_dir": ("STRING", {"default": ""}),
-                "lora_dir": ("STRING", {"default": ""}),
                 "max_seq_len": ("INT", {"default": 2048, "min": 1, "max": 8192}),
             },
         }
@@ -99,11 +106,11 @@ class Loader:
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("GPTQ",)
 
-    def load(self, model_dir, lora_dir, max_seq_len):
+    def load(self, model_dir, max_seq_len):
         soft_empty_cache()
 
         model_dir = Path(model_dir).expanduser()
-        config = ExLlamaConfig(model_dir / "config.json")
+        config = ExLlamaConfig(str(model_dir / "config.json"))
         config.model_path = model_dir.glob("*.safetensors")
         config.max_seq_len = max_seq_len
 
@@ -111,16 +118,8 @@ class Loader:
         cache = ExLlamaCache(model)
         tokenizer = ExLlamaTokenizer(str(model_dir / "tokenizer.model"))
         generator = ExLlamaAltGenerator(model, tokenizer, cache)
-        settings = ExLlamaAltGenerator.Settings()
 
-        if lora_dir:
-            lora_dir = Path(lora_dir).expanduser()
-            lora_config = str(lora_dir / "adapter_config.json")
-            lora_model = str(lora_dir / "adapter_model.bin")
-            lora = ExLlamaLora(model, lora_config, lora_model)
-            settings.lora = lora
-
-        return ({"generator": generator, "settings": settings},)
+        return (generator,)
 
 
 class Previewer:
