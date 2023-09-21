@@ -23,6 +23,7 @@ Generator | Generates a `string` based on the given `prompt` for use with other 
 Previewer | Displays generated outputs in the UI.
 
 ## Workflow
-The workflow below can be opened in ComfyUI. Peak VRAM usage with SDXL around 10GB. Model: [MythoLogic-Mini-7B](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
+The workflow below can be opened in ComfyUI. Peak VRAM usage with SDXL around 10GB.<br>
+Model: [MythoLogic-Mini-7B-GPTQ](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
 
 ![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/b0bfd1f5-c981-4aaa-9a15-9f208387f0d5)
