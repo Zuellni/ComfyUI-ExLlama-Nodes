@@ -49,7 +49,7 @@ class Generator:
             },
         }
 
-    CATEGORY = "ExLlama"
+    CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "generate"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
@@ -114,7 +114,7 @@ class Loader:
             },
         }
 
-    CATEGORY = "ExLlama"
+    CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "load"
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("GPTQ",)
@@ -143,7 +143,7 @@ class LoraLoader:
             },
         }
 
-    CATEGORY = "ExLlama"
+    CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "load"
     RETURN_TYPES = ("LORA",)
 
@@ -169,7 +169,7 @@ class Previewer:
             },
         }
 
-    CATEGORY = "ExLlama"
+    CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "preview"
     OUTPUT_NODE = True
     RETURN_NAMES = ("TEXT",)
