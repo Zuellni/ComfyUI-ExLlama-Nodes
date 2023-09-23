@@ -49,7 +49,7 @@ class Generator:
             },
         }
 
-    CATEGORY = "Zuellni/ExLlama"
+    CATEGORY = "ExLlama"
     FUNCTION = "generate"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
@@ -114,7 +114,7 @@ class Loader:
             },
         }
 
-    CATEGORY = "Zuellni/ExLlama"
+    CATEGORY = "ExLlama"
     FUNCTION = "load"
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("GPTQ",)
@@ -133,7 +133,7 @@ class Loader:
         return (generator,)
 
 
-class Lora:
+class LoraLoader:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -143,7 +143,7 @@ class Lora:
             },
         }
 
-    CATEGORY = "Zuellni/ExLlama"
+    CATEGORY = "ExLlama"
     FUNCTION = "load"
     RETURN_TYPES = ("LORA",)
 
@@ -159,13 +159,28 @@ class Lora:
 class Previewer:
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"text": ("STRING", {"forceInput": True})}}
+        return {
+            "required": {
+                "text": ("STRING", {"forceInput": True}),
+            },
+            "hidden": {
+                "info": "EXTRA_PNGINFO",
+                "id": "UNIQUE_ID",
+            },
+        }
 
-    CATEGORY = "Zuellni/ExLlama"
+    CATEGORY = "ExLlama"
     FUNCTION = "preview"
     OUTPUT_NODE = True
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def preview(self, text):
+    def preview(self, text, info=None, id=None):
+        if id and info and "workflow" in info:
+            workflow = info["workflow"]
+            node = next((n for n in workflow["nodes"] if str(n["id"]) == id), None)
+
+            if node:
+                node["widgets_values"] = [text]
+
         return {"ui": {"text": [text]}, "result": (text,)}

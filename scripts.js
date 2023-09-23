@@ -13,18 +13,18 @@ app.registerExtension({
 				onExecuted?.apply(this, arguments);
 
 				if (this.widgets) {
-					const pos = this.widgets.findIndex((w) => w.name === "text");
+					const position = this.widgets.findIndex((w) => w.name === "text");
 
-					if (pos !== -1) {
-						for (let i = pos; i < this.widgets.length; i++) {
+					if (position !== -1) {
+						for (let i = position; i < this.widgets.length; i++) {
 							this.widgets[i].onRemove?.();
 						}
 
-						this.widgets.length = pos;
+						this.widgets.length = position;
 					}
 
-					const string = ["STRING", { multiline: true }];
-					const widget = ComfyWidgets["STRING"](this, "text", string, app).widget;
+					const type = ["STRING", { multiline: true }];
+					const widget = ComfyWidgets["STRING"](this, "text", type, app).widget;
 
 					widget.inputEl.readOnly = true;
 					widget.inputEl.style.opacity = 0.7;

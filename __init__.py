@@ -1,8 +1,8 @@
-from .nodes import Generator, Loader, Lora, Previewer
+from .nodes import Generator, Loader, LoraLoader, Previewer
 
 NODE_CLASS_MAPPINGS = {
     "ZuellniExLlamaLoader": Loader,
-    "ZuellniExLlamaLoraLoader": Lora,
+    "ZuellniExLlamaLoraLoader": LoraLoader,
     "ZuellniExLlamaGenerator": Generator,
     "ZuellniExLlamaPreviewer": Previewer,
 }
