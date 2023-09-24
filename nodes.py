@@ -133,7 +133,7 @@ class Loader:
         return (generator,)
 
 
-class LoraLoader:
+class Lora:
     @classmethod
     def INPUT_TYPES(cls):
         return {
