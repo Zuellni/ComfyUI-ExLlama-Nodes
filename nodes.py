@@ -6,10 +6,16 @@ from colorama import Fore
 from comfy.utils import ProgressBar
 
 if not torch.cuda.is_available():
-    raise Exception(f"\n{Fore.RED}ExLlama doesn't support CPU mode.{Fore.RESET}")
+    raise Exception(f"\n{Fore.RED}No CUDA found. ExLlama doesn't support CPU mode.{Fore.RESET}")
 
-cuda = str(torch.version.cuda or torch.version.hip).replace(".", "")
-pckg = f"cu{cuda}-cp{sys.version_info.major}{sys.version_info.minor}"
+cuda = ""
+
+if torch.version.hip:
+    cuda = "rocm" + str(torch.version.hip)
+else:
+    cuda = "cu" + str(torch.version.cuda).replace(".", "")
+
+pckg = f"{cuda}-cp{sys.version_info.major}{sys.version_info.minor}"
 
 try:
     from exllama.alt_generator import ExLlamaAltGenerator
@@ -23,7 +29,7 @@ except ModuleNotFoundError:
     )
 except ImportError:
     raise Exception(
-        f"\n{Fore.RED}Wrong ExLlama wheel installed. Get {Fore.CYAN}{pckg}{Fore.RED} from"
+        f"\n{Fore.RED}Wrong ExLlama version installed. Get {Fore.CYAN}{pckg}{Fore.RED} from"
         f"\n{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
     )
 
