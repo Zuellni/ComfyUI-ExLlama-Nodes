@@ -6,9 +6,9 @@ from colorama import Fore
 from comfy.utils import ProgressBar
 
 if not torch.cuda.is_available():
-    raise Exception(f"\n{Fore.RED}No CUDA detected. ExLlama doesn't support CPU.{Fore.RESET}")
+    raise Exception(f"\n{Fore.RED}ExLlama doesn't support CPU mode.{Fore.RESET}")
 
-cuda = torch.version.cuda.replace(".", "")
+cuda = str(torch.version.cuda or torch.version.hip).replace(".", "")
 pckg = f"cu{cuda}-cp{sys.version_info.major}{sys.version_info.minor}"
 
 try:

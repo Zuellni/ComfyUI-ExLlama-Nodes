@@ -19,7 +19,6 @@ app.registerExtension({
 						for (let i = position; i < this.widgets.length; i++) {
 							this.widgets[i].onRemove?.();
 						}
-
 						this.widgets.length = position;
 					}
 
