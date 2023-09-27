@@ -91,9 +91,9 @@ class Loader:
 
     def load(self, model_dir, max_seq_len):
         config = ExLlamaV2Config()
-        config.max_seq_len = max_seq_len
         config.model_dir = model_dir
         config.prepare()
+        config.max_seq_len = max_seq_len       
 
         model = ExLlamaV2(config)
         model.load()
