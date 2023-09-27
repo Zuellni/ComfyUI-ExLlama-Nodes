@@ -5,13 +5,13 @@ A simple prompt generator for [ComfyUI](https://github.com/comfyanonymous/ComfyU
 Clone the repository to `custom_nodes` in your ComfyUI directory and install dependencies:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
-python -m pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 If you see any ExLlama errors while loading, install it manually from [here](https://github.com/turboderp/exllamav2/releases/latest).<br>
 For example, on Windows with Python 3.10 and CUDA 11.7:
 ```
-python -m pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.4/exllamav2-0.0.4+cu117-cp310-cp310-win_amd64.whl
+pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.4/exllamav2-0.0.4+cu117-cp310-cp310-win_amd64.whl
 ```
 
 ## Nodes
