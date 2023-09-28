@@ -4,6 +4,37 @@ from exllamav2 import ExLlamaV2, ExLlamaV2Cache, ExLlamaV2Config, ExLlamaV2Token
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
 
 
+class Loader:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_dir": ("STRING", {"default": ""}),
+                "max_seq_len": ("INT", {"default": 2048, "min": 1, "max": 8192}),
+            },
+        }
+
+    CATEGORY = "Zuellni/ExLlama"
+    FUNCTION = "load"
+    RETURN_NAMES = ("MODEL",)
+    RETURN_TYPES = ("EXLLAMA_MODEL",)
+
+    def load(self, model_dir, max_seq_len):
+        config = ExLlamaV2Config()
+        config.model_dir = model_dir
+        config.prepare()
+        config.max_seq_len = max_seq_len
+
+        model = ExLlamaV2(config)
+        model.load()
+
+        tokenizer = ExLlamaV2Tokenizer(config)
+        cache = ExLlamaV2Cache(model)
+        generator = ExLlamaV2StreamingGenerator(model, cache, tokenizer)
+
+        return (generator,)
+
+
 class Generator:
     @classmethod
     def INPUT_TYPES(cls):
@@ -40,12 +71,9 @@ class Generator:
         seed,
         prompt,
     ):
-        if not prompt:
-            return ("",)
-
         torch.manual_seed(seed)
         progress = ProgressBar(max_tokens)
-        input = model.tokenizer.encode(prompt)
+        prompt = model.tokenizer.encode(prompt)
         stop_conditions = [model.tokenizer.eos_token_id]
 
         if stop_on_newline:
@@ -59,7 +87,7 @@ class Generator:
         settings.token_repetition_penalty = penalty
 
         model.set_stop_conditions(stop_conditions)
-        model.begin_stream(input, settings)
+        model.begin_stream(prompt, settings)
         eos = False
         tokens = 0
         text = ""
@@ -70,38 +98,7 @@ class Generator:
             text += chunk
             tokens += 1
 
-        progress.update_absolute(max_tokens)
         return (text.strip(),)
-
-
-class Loader:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model_dir": ("STRING", {"default": ""}),
-                "max_seq_len": ("INT", {"default": 2048, "min": 1, "max": 8192}),
-            },
-        }
-
-    CATEGORY = "Zuellni/ExLlama"
-    FUNCTION = "load"
-    RETURN_NAMES = ("MODEL",)
-    RETURN_TYPES = ("EXLLAMA_MODEL",)
-
-    def load(self, model_dir, max_seq_len):
-        config = ExLlamaV2Config()
-        config.model_dir = model_dir
-        config.prepare()
-        config.max_seq_len = max_seq_len       
-
-        model = ExLlamaV2(config)
-        model.load()
-
-        tokenizer = ExLlamaV2Tokenizer(config)
-        cache = ExLlamaV2Cache(model)
-        generator = ExLlamaV2StreamingGenerator(model, cache, tokenizer)
-        return (generator,)
 
 
 class Previewer:
