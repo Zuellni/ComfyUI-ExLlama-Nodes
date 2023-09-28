@@ -1,37 +1,38 @@
-from pathlib import Path
-from platform import sys
-
 import torch
-from colorama import Fore
 from comfy.utils import ProgressBar
+from exllamav2 import ExLlamaV2, ExLlamaV2Cache, ExLlamaV2Config, ExLlamaV2Tokenizer
+from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
 
-if not torch.cuda.is_available():
-    raise Exception(f"\n{Fore.RED}No CUDA found. ExLlama doesn't support CPU mode.{Fore.RESET}")
 
-cuda = ""
+class Loader:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "model_dir": ("STRING", {"default": ""}),
+                "max_seq_len": ("INT", {"default": 2048, "min": 1, "max": 8192}),
+            },
+        }
 
-if torch.version.hip:
-    cuda = "rocm" + str(torch.version.hip)
-else:
-    cuda = "cu" + str(torch.version.cuda).replace(".", "")
+    CATEGORY = "Zuellni/ExLlama"
+    FUNCTION = "load"
+    RETURN_NAMES = ("MODEL",)
+    RETURN_TYPES = ("EXLLAMA_MODEL",)
 
-pckg = f"{cuda}-cp{sys.version_info.major}{sys.version_info.minor}"
+    def load(self, model_dir, max_seq_len):
+        config = ExLlamaV2Config()
+        config.model_dir = model_dir
+        config.prepare()
+        config.max_seq_len = max_seq_len
 
-try:
-    from exllama.alt_generator import ExLlamaAltGenerator
-    from exllama.lora import ExLlamaLora
-    from exllama.model import ExLlama, ExLlamaCache, ExLlamaConfig
-    from exllama.tokenizer import ExLlamaTokenizer
-except ModuleNotFoundError:
-    raise Exception(
-        f"\n{Fore.RED}ExLlama not installed. Get {Fore.CYAN}{pckg}{Fore.RED} from"
-        f"\n{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
-    )
-except ImportError:
-    raise Exception(
-        f"\n{Fore.RED}Wrong ExLlama version installed. Get {Fore.CYAN}{pckg}{Fore.RED} from"
-        f"\n{Fore.MAGENTA}https://github.com/jllllll/exllama/releases/latest{Fore.RESET}"
-    )
+        model = ExLlamaV2(config)
+        model.load()
+
+        tokenizer = ExLlamaV2Tokenizer(config)
+        cache = ExLlamaV2Cache(model)
+        generator = ExLlamaV2StreamingGenerator(model, cache, tokenizer)
+
+        return (generator,)
 
 
 class Generator:
@@ -39,19 +40,16 @@ class Generator:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model": ("GPTQ",),
+                "model": ("EXLLAMA_MODEL",),
                 "stop_on_newline": ([False, True], {"default": False}),
                 "max_tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
                 "temperature": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "min": 0, "max": 200}),
                 "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
-                "typical_p": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "typical": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "penalty": ("FLOAT", {"default": 1.15, "min": 1.0, "max": 2.0, "step": 0.01}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**64 - 1}),
                 "prompt": ("STRING", {"default": "", "multiline": True}),
-            },
-            "optional": {
-                "lora": ("LORA",),
             },
         }
 
@@ -68,98 +66,39 @@ class Generator:
         temperature,
         top_k,
         top_p,
-        typical_p,
+        typical,
         penalty,
         seed,
         prompt,
-        lora=None,
     ):
-        progress = ProgressBar(max_tokens)
-        prompt = prompt.strip()
         torch.manual_seed(seed)
-
-        if not prompt:
-            return ("",)
-
-        settings = ExLlamaAltGenerator.Settings()
-        settings.temperature = temperature
-        settings.top_k = top_k
-        settings.top_p = top_p
-        settings.typical = typical_p
-        settings.token_repetition_penalty_max = penalty
-        settings.lora = lora
-
+        progress = ProgressBar(max_tokens)
+        prompt = model.tokenizer.encode(prompt)
         stop_conditions = [model.tokenizer.eos_token_id]
 
         if stop_on_newline:
             stop_conditions += [model.tokenizer.newline_token_id]
 
-        model.begin_stream(prompt, stop_conditions, max_tokens, settings)
+        settings = ExLlamaV2Sampler.Settings()
+        settings.temperature = temperature
+        settings.top_k = top_k
+        settings.top_p = top_p
+        settings.typical = typical
+        settings.token_repetition_penalty = penalty
+
+        model.set_stop_conditions(stop_conditions)
+        model.begin_stream(prompt, settings)
         eos = False
+        tokens = 0
         text = ""
 
-        while not eos:
-            chunk, eos = model.stream()
+        while not eos and tokens < max_tokens:
+            chunk, eos, _ = model.stream()
             progress.update(1)
             text += chunk
+            tokens += 1
 
-        progress.update_absolute(max_tokens)
-        text = text.strip()
-        print(f"[{Fore.CYAN}ExLlama{Fore.RESET}]: {text}\n")
-
-        return (text,)
-
-
-class Loader:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model_dir": ("STRING", {"default": ""}),
-                "max_seq_len": ("INT", {"default": 2048, "min": 1, "max": 8192}),
-            },
-        }
-
-    CATEGORY = "Zuellni/ExLlama"
-    FUNCTION = "load"
-    RETURN_NAMES = ("MODEL",)
-    RETURN_TYPES = ("GPTQ",)
-
-    def load(self, model_dir, max_seq_len):
-        model_dir = Path(model_dir).expanduser()
-        config = ExLlamaConfig(str(model_dir / "config.json"))
-        config.model_path = model_dir.glob("*.safetensors")
-        config.max_seq_len = max_seq_len
-
-        model = ExLlama(config)
-        cache = ExLlamaCache(model)
-        tokenizer = ExLlamaTokenizer(str(model_dir / "tokenizer.model"))
-        generator = ExLlamaAltGenerator(model, tokenizer, cache)
-
-        return (generator,)
-
-
-class Lora:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "model": ("GPTQ",),
-                "lora_dir": ("STRING", {"default": ""}),
-            },
-        }
-
-    CATEGORY = "Zuellni/ExLlama"
-    FUNCTION = "load"
-    RETURN_TYPES = ("LORA",)
-
-    def load(self, model, lora_dir):
-        lora_dir = Path(lora_dir).expanduser()
-        lora_config = str(lora_dir / "adapter_config.json")
-        lora_model = str(lora_dir / "adapter_model.bin")
-        lora = ExLlamaLora(model.model, lora_config, lora_model)
-
-        return (lora,)
+        return (text.strip(),)
 
 
 class Previewer:
@@ -178,8 +117,7 @@ class Previewer:
     CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "preview"
     OUTPUT_NODE = True
-    RETURN_NAMES = ("TEXT",)
-    RETURN_TYPES = ("STRING",)
+    RETURN_TYPES = ()
 
     def preview(self, text, info=None, id=None):
         if id and info and "workflow" in info:
@@ -189,4 +127,4 @@ class Previewer:
             if node:
                 node["widgets_values"] = [text]
 
-        return {"ui": {"text": [text]}, "result": (text,)}
+        return {"ui": {"text": [text]}}
