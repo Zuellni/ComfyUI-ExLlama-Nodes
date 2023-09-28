@@ -24,3 +24,5 @@ Previewer | Displays generated outputs in the UI and appends them to workflow me
 ## Workflow
 The workflow below can be opened in ComfyUI. VRAM usage around 3GB before SDXL.<br>
 Model: [Mistral-7B-instruct-exl2-2.5bpw](https://huggingface.co/turboderp/Mistral-7B-instruct-exl2/tree/2.5bpw).
+
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/09da1788-f879-4076-baea-b257dd682ded)
