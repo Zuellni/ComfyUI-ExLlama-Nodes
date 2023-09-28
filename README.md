@@ -22,7 +22,8 @@ Generator | Generates a `string` based on the given `prompt` for use with other 
 Previewer | Displays generated outputs in the UI and appends them to workflow metadata.
 
 ## Workflow
-The workflow below can be opened in ComfyUI. VRAM usage around 3GB before SDXL.<br>
+The workflow below can be opened in ComfyUI.<br>
+Only around 3GB VRAM usage without SDXL.<br>
 Model: [Mistral-7B-instruct-exl2-2.5bpw](https://huggingface.co/turboderp/Mistral-7B-instruct-exl2/tree/2.5bpw).
 
 ![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/09da1788-f879-4076-baea-b257dd682ded)
