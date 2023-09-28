@@ -17,12 +17,10 @@ pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.4/exll
 ## Nodes
 Name | Description
 :--- | :---
-Loader | Loads GPTQ/EXL2 Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repository or download all the files and place them in an empty directory, then specify the path in `model_dir`. The `model.safetensors` file won't work on its own.<br><br>ExLlama allocates memory based on `max_seq_len`. Lowering it is a good way to save on VRAM.<br>It's currently not possible to offload the model to RAM.
+Loader | Loads EXL2/GPTQ Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repository or download all the files and place them in an empty directory, then specify the path in `model_dir`. The `model.safetensors` file won't work on its own.<br><br>ExLlama allocates memory based on `max_seq_len`. Lowering it is a good way to save on VRAM.<br>It's currently not possible to offload the model to RAM.
 Generator | Generates a `string` based on the given `prompt` for use with other nodes.<br>Default values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).<br><br>ExLlama isn't deterministic, so the outputs may differ even with the same seed.
 Previewer | Displays generated outputs in the UI and appends them to workflow metadata.
 
 ## Workflow
-The workflow below can be opened in ComfyUI. Peak VRAM usage with SDXL around 10GB.<br>
-Model: [MythoLogic-Mini-7B-GPTQ](https://huggingface.co/TheBloke/MythoLogic-Mini-7B-GPTQ).
-
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/b0bfd1f5-c981-4aaa-9a15-9f208387f0d5)
+The workflow below can be opened in ComfyUI. VRAM usage around 3GB before SDXL.<br>
+Model: [Mistral-7B-instruct-exl2-2.5bpw](https://huggingface.co/turboderp/Mistral-7B-instruct-exl2/tree/2.5bpw).
