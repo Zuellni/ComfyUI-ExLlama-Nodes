@@ -1,17 +1,17 @@
-from .nodes import Formatter, Generator, Loader, Previewer
+from .nodes import Generator, Loader, Previewer, Replacer
 
 NODE_CLASS_MAPPINGS = {
     "ZuellniExLlamaLoader": Loader,
     "ZuellniExLlamaGenerator": Generator,
-    "ZuellniTextFormatter": Formatter,
     "ZuellniTextPreviewer": Previewer,
+    "ZuellniTextReplacer": Replacer,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "ZuellniExLlamaLoader": "ExLlama Loader",
     "ZuellniExLlamaGenerator": "ExLlama Generator",
-    "ZuellniTextFormatter": "Format Text",
     "ZuellniTextPreviewer": "Preview Text",
+    "ZuellniTextReplacer": "Replace Text",
 }
 
 WEB_DIRECTORY = "."

@@ -101,32 +101,6 @@ class Generator:
         return (text.strip(),)
 
 
-class Formatter:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "text": ("STRING", {"default": "", "multiline": True}),
-            },
-            "optional": {
-                "a": ("STRING", {"forceInput": True, "multiline": True}),
-                "b": ("STRING", {"forceInput": True, "multiline": True}),
-                "c": ("STRING", {"forceInput": True, "multiline": True}),
-            },
-        }
-
-    CATEGORY = "Zuellni/Text"
-    FUNCTION = "format"
-    RETURN_NAMES = ("TEXT",)
-    RETURN_TYPES = ("STRING",)
-
-    def format(self, text, **vars):
-        for key, value in vars.items():
-            text = text.replace(f"[{key}]", value)
-
-        return (text,)
-
-
 class Previewer:
     @classmethod
     def INPUT_TYPES(cls):
@@ -147,10 +121,37 @@ class Previewer:
 
     def preview(self, text, info=None, id=None):
         if id and info and "workflow" in info:
-            workflow = info["workflow"]
-            node = next((n for n in workflow["nodes"] if str(n["id"]) == id), None)
+            nodes = info["workflow"]["nodes"]
+            node = next((n for n in nodes if str(n["id"]) == id), None)
 
             if node:
                 node["widgets_values"] = [text]
 
         return {"ui": {"text": [text]}}
+
+
+class Replacer:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "text": ("STRING", {"default": "", "multiline": True}),
+            },
+            "optional": {
+                "a": ("STRING", {"forceInput": True, "multiline": True}),
+                "b": ("STRING", {"forceInput": True, "multiline": True}),
+                "c": ("STRING", {"forceInput": True, "multiline": True}),
+                "d": ("STRING", {"forceInput": True, "multiline": True}),
+            }
+        }
+
+    CATEGORY = "Zuellni/Text"
+    FUNCTION = "replace"
+    RETURN_NAMES = ("TEXT",)
+    RETURN_TYPES = ("STRING",)
+
+    def replace(self, text, **vars):
+        for key, value, in vars.items():
+            text = text.replace(f"[{key}]", value)
+
+        return (text,)
