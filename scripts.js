@@ -1,12 +1,10 @@
-// Copied from https://github.com/pythongosssss/ComfyUI-Custom-Scripts/blob/main/web/js/showText.js
-
 import { app } from "../../../scripts/app.js";
 import { ComfyWidgets } from "../../../scripts/widgets.js";
 
 app.registerExtension({
-	name: "ZuellniExLlamaPreviewer",
+	name: "ZuellniTextPreviewer",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.name === "ZuellniExLlamaPreviewer") {
+		if (nodeData.name === "ZuellniTextPreviewer") {
 			const onExecuted = nodeType.prototype.onExecuted;
 
 			nodeType.prototype.onExecuted = function (message) {

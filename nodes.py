@@ -43,13 +43,13 @@ class Generator:
                 "model": ("EXLLAMA_MODEL",),
                 "stop_on_newline": ([False, True], {"default": False}),
                 "max_tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
-                "temperature": ("FLOAT", {"default": 0.7, "min": 0.0, "max": 2.0, "step": 0.01}),
+                "temperature": ("FLOAT", {"default": 0.7, "min": 0, "max": 2, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "min": 0, "max": 200}),
-                "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
-                "typical": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
-                "penalty": ("FLOAT", {"default": 1.15, "min": 1.0, "max": 2.0, "step": 0.01}),
+                "top_p": ("FLOAT", {"default": 0.9, "min": 0, "max": 1, "step": 0.01}),
+                "typical": ("FLOAT", {"default": 1, "min": 0, "max": 1, "step": 0.01}),
+                "penalty": ("FLOAT", {"default": 1.15, "min": 1, "max": 2, "step": 0.01}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 2**64 - 1}),
-                "prompt": ("STRING", {"default": "", "multiline": True}),
+                "text": ("STRING", {"default": "", "multiline": True}),
             },
         }
 
@@ -69,11 +69,11 @@ class Generator:
         typical,
         penalty,
         seed,
-        prompt,
+        text,
     ):
         torch.manual_seed(seed)
         progress = ProgressBar(max_tokens)
-        prompt = model.tokenizer.encode(prompt)
+        prompt = model.tokenizer.encode(text)
         stop_conditions = [model.tokenizer.eos_token_id]
 
         if stop_on_newline:
@@ -101,6 +101,32 @@ class Generator:
         return (text.strip(),)
 
 
+class Formatter:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "text": ("STRING", {"default": "", "multiline": True}),
+            },
+            "optional": {
+                "a": ("STRING", {"forceInput": True, "multiline": True}),
+                "b": ("STRING", {"forceInput": True, "multiline": True}),
+                "c": ("STRING", {"forceInput": True, "multiline": True}),
+            },
+        }
+
+    CATEGORY = "Zuellni/Text"
+    FUNCTION = "format"
+    RETURN_NAMES = ("TEXT",)
+    RETURN_TYPES = ("STRING",)
+
+    def format(self, text, **vars):
+        for key, value in vars.items():
+            text = text.replace(f"[{key}]", value)
+
+        return (text,)
+
+
 class Previewer:
     @classmethod
     def INPUT_TYPES(cls):
@@ -114,7 +140,7 @@ class Previewer:
             },
         }
 
-    CATEGORY = "Zuellni/ExLlama"
+    CATEGORY = "Zuellni/Text"
     FUNCTION = "preview"
     OUTPUT_NODE = True
     RETURN_TYPES = ()
