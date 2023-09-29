@@ -24,4 +24,4 @@ Replacer | Replaces variables enclosed in brackets, such as `[a]`, with their va
 ## Workflow
 The image below can be opened in ComfyUI. The [model](https://huggingface.co/turboderp/Mistral-7B-instruct-exl2/tree/2.5bpw) uses around 3-4GB of VRAM depending on sequence length.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/09da1788-f879-4076-baea-b257dd682ded)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/b68549c1-233a-4199-bb1a-7004e0638299)
