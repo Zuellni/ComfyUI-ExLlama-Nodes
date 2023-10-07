@@ -74,13 +74,13 @@ class Generator:
         seed,
         text,
     ):
-        tokenizer, generator, settings = model
-        progress = ProgressBar(max_tokens)
-
         if not text:
             return ("",)
 
+        tokenizer, generator, settings = model
+        progress = ProgressBar(max_tokens)
         prompt = tokenizer.encode(text)
+
         stop_conditions = [tokenizer.eos_token_id]
         stop_on_newline and stop_conditions.append(tokenizer.newline_token_id)
         generator.set_stop_conditions(stop_conditions)
