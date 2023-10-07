@@ -8,10 +8,7 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 pip install -r requirements.txt
 ```
 
-If you see any ExLlama-related errors while loading, install it manually from [here](https://github.com/turboderp/exllamav2/releases/latest). For example, on Windows with Python 3.10 and CUDA 11.7:
-```
-pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.4/exllamav2-0.0.4+cu117-cp310-cp310-win_amd64.whl
-```
+If you see any ExLlama-related errors while loading, install it manually following the instructions from [here](https://github.com/turboderp/exllamav2#installation).
 
 ## Nodes
 Name | Description

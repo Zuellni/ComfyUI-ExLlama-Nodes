@@ -1,17 +1,9 @@
-from .nodes import Generator, Loader, Previewer, Replacer
+from . import exllama, text
 
-NODE_CLASS_MAPPINGS = {
-    "ZuellniExLlamaLoader": Loader,
-    "ZuellniExLlamaGenerator": Generator,
-    "ZuellniTextPreviewer": Previewer,
-    "ZuellniTextReplacer": Replacer,
-}
-
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "ZuellniExLlamaLoader": "ExLlama Loader",
-    "ZuellniExLlamaGenerator": "ExLlama Generator",
-    "ZuellniTextPreviewer": "Preview Text",
-    "ZuellniTextReplacer": "Replace Text",
-}
-
+NODE_CLASS_MAPPINGS = {}
+NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "."
+
+for module in (exllama, text):
+    NODE_CLASS_MAPPINGS.update(module.NODE_CLASS_MAPPINGS)
+    NODE_DISPLAY_NAME_MAPPINGS.update(module.NODE_DISPLAY_NAME_MAPPINGS)
