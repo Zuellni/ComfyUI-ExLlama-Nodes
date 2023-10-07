@@ -19,7 +19,7 @@ class Loader:
     CATEGORY = "Zuellni/ExLlama"
     FUNCTION = "load"
     RETURN_NAMES = ("MODEL",)
-    RETURN_TYPES = ("EL_MODEL",)
+    RETURN_TYPES = ("EXL_MODEL",)
 
     def load(self, model_dir, max_seq_len):
         config = ExLlamaV2Config()
@@ -43,8 +43,8 @@ class Generator:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "model": ("EL_MODEL",),
-                "stop_on_newline": ((False, True),),
+                "model": ("EXL_MODEL",),
+                "stop_on_newline": ("BOOLEAN", {"default": False}),
                 "max_tokens": ("INT", {"default": 128, "min": 1, "max": 8192}),
                 "temperature": ("FLOAT", {"default": 0.7, "max": 2, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "max": 200}),
@@ -106,8 +106,8 @@ class Generator:
 
         total = round(time() - start, 2)
         speed = round(tokens / total, 2)
-
         print(f"Output generated in {total} seconds ({tokens} tokens, {speed} tokens/s)")
+
         return (output.strip(),)
 
 
