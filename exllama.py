@@ -1,6 +1,8 @@
+from gc import collect
 from time import time
 
 import torch
+from comfy.model_management import soft_empty_cache
 from comfy.utils import ProgressBar
 from exllamav2 import ExLlamaV2, ExLlamaV2Cache, ExLlamaV2Config, ExLlamaV2Tokenizer
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
@@ -21,18 +23,25 @@ class Loader:
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("EXL_MODEL",)
 
+    def __init__(self):
+        self.model = None
+
     def load(self, model_dir, max_seq_len):
+        del self.model
+        collect()
+        soft_empty_cache()
+
         config = ExLlamaV2Config()
         config.model_dir = model_dir
         config.prepare()
         config.max_seq_len = max_seq_len
 
-        model = ExLlamaV2(config)
-        model.load()
+        self.model = ExLlamaV2(config)
+        self.model.load()
 
-        cache = ExLlamaV2Cache(model)
+        cache = ExLlamaV2Cache(self.model)
         tokenizer = ExLlamaV2Tokenizer(config)
-        generator = ExLlamaV2StreamingGenerator(model, cache, tokenizer)
+        generator = ExLlamaV2StreamingGenerator(self.model, cache, tokenizer)
         settings = ExLlamaV2Sampler.Settings()
 
         return ((tokenizer, generator, settings),)
