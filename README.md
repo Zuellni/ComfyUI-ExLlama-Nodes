@@ -8,7 +8,7 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 pip install -r requirements.txt
 ```
 
-If you see any ExLlama-related errors while loading, install it manually following the instructions from [here](https://github.com/turboderp/exllamav2#installation).
+If you see any ExLlama-related errors while loading, install it manually following the instructions from [here](https://github.com/turboderp/exllamav2#method-2-install-from-release-with-prebuilt-extension).
 
 ## Nodes
 Name | Description
