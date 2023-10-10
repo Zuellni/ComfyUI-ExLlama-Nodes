@@ -2,9 +2,9 @@ import { app } from "../../../scripts/app.js";
 import { ComfyWidgets } from "../../../scripts/widgets.js";
 
 app.registerExtension({
-	name: "ZuellniTextPreviewer",
+	name: "ZuellniTextPreview",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.name === "ZuellniTextPreviewer") {
+		if (nodeData.name === "ZuellniTextPreview") {
 			const onExecuted = nodeType.prototype.onExecuted;
 
 			nodeType.prototype.onExecuted = function (message) {

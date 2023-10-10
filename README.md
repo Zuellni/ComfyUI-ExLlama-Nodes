@@ -15,10 +15,11 @@ Name | Description
 :--- | :---
 Loader | Used to load EXL2/GPTQ Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke). Clone the model repository or download all the files in it and place them in an empty directory, then specify the path in `model_dir`. The `model.safetensors` file won't work on its own.<br><br>ExLlama allocates memory based on `max_seq_len`. Lowering it is a good way to save on VRAM. It's currently not possible to offload the model to RAM.
 Generator | Generates a `string` based on the given input for use with other nodes. Default values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).<br><br>ExLlama isn't deterministic, so the outputs may differ even with the same seed.
-Previewer | Displays generated outputs in the UI and appends them to workflow metadata.
-Replacer | Replaces variables enclosed in brackets, such as `[a]`, with their values.
+Condition | Checks if the input meets some condition, interrupts processing otherwise.
+Format | Replaces variables enclosed in brackets, such as `[a]`, with their values.
+Preview | Displays generated outputs in the UI.
 
 ## Workflow
-The image below can be opened in ComfyUI. The [model](https://huggingface.co/turboderp/Mistral-7B-instruct-exl2/tree/2.5bpw) uses around 3-4GB of VRAM depending on sequence length.
+The image below can be opened in ComfyUI.
 
 ![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/b68549c1-233a-4199-bb1a-7004e0638299)

@@ -1,33 +1,52 @@
-class Previewer:
+from comfy.model_management import InterruptProcessingException
+
+
+class Condition:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "text": ("STRING", {"forceInput": True}),
+                "a": ("STRING", {"forceInput": True}),
+                "condition": (["==", "!=", ">", ">=", "<", "<=", "in", "sw", "ew"],),
+                "b": ("STRING", {"default": ""}),
             },
-            "hidden": {
-                "info": "EXTRA_PNGINFO",
-                "id": "UNIQUE_ID",
+            "optional": {
+                "text": ("STRING", {"forceInput": True, "multiline": True}),
             },
         }
 
     CATEGORY = "Zuellni/Text"
-    FUNCTION = "preview"
-    OUTPUT_NODE = True
-    RETURN_TYPES = ()
+    FUNCTION = "condition"
+    OUTPUT_Node = True
+    RETURN_NAMES = ("TEXT",)
+    RETURN_TYPES = ("STRING",)
 
-    def preview(self, text, info=None, id=None):
-        if id and info and "workflow" in info:
-            nodes = info["workflow"]["nodes"]
-            node = next((n for n in nodes if str(n["id"]) == id), None)
+    def condition(self, a, condition, b, text=None):
+        try:
+            a = float(a)
+            b = float(b)
+        except:
+            pass
 
-            if node:
-                node["widgets_values"] = [text]
+        conditions = {
+            "==": lambda: a == b,
+            "!=": lambda: a != b,
+            ">": lambda: a > b,
+            ">=": lambda: a >= b,
+            "<": lambda: a < b,
+            "<=": lambda: a <= b,
+            "in": lambda: str(a) in str(b),
+            "sw": lambda: str(a).startswith(str(b)),
+            "ew": lambda: str(a).endswith(str(b)),
+        }
 
-        return {"ui": {"text": [text]}}
+        if not conditions[condition]():
+            raise InterruptProcessingException()
+
+        return (text,)
 
 
-class Replacer:
+class Format:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -43,25 +62,42 @@ class Replacer:
         }
 
     CATEGORY = "Zuellni/Text"
-    FUNCTION = "replace"
+    FUNCTION = "format"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def replace(self, text, **vars):
+    def format(self, text, **vars):
         for key, value in vars.items():
-            text = text.replace(f"[{key}]", value)
+            if value:
+                text = text.replace(f"[{key}]", value)
 
         return (text,)
 
 
+class Preview:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {"required": {"text": ("STRING", {"forceInput": True})}}
+
+    CATEGORY = "Zuellni/Text"
+    FUNCTION = "preview"
+    OUTPUT_NODE = True
+    RETURN_TYPES = ()
+
+    def preview(self, text):
+        return {"ui": {"text": [text]}}
+
+
 NODE_CLASS_MAPPINGS = {
-    "ZuellniTextPreviewer": Previewer,
-    "ZuellniTextReplacer": Replacer,
+    "ZuellniTextCondition": Condition,
+    "ZuellniTextFormat": Format,
+    "ZuellniTextPreview": Preview,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "ZuellniTextPreviewer": "Preview Text",
-    "ZuellniTextReplacer": "Replace Text",
+    "ZuellniTextCondition": "Condition",
+    "ZuellniTextFormat": "Format",
+    "ZuellniTextPreview": "Preview",
 }
 
 WEB_DIRECTORY = "."
