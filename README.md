@@ -22,4 +22,4 @@ Preview | Displays generated outputs in the UI.
 ## Workflow
 The image below can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/b68549c1-233a-4199-bb1a-7004e0638299)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/a4c980ac-281c-41fd-8fa7-b4c1d0419bea)
