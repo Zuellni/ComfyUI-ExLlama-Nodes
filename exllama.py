@@ -112,11 +112,11 @@ class Generator:
         input = model.tokenizer.encode(text)
         stop_conditions = [model.tokenizer.eos_token_id]
 
-        if stop_on_newline:
-            stop_conditions.append(model.tokenizer.newline_token_id)
-
         if not max_new_tokens:
             max_new_tokens = model.config.max_seq_len - input.shape[-1]
+
+        if stop_on_newline:
+            stop_conditions.append(model.tokenizer.newline_token_id)
 
         model.generator.set_stop_conditions(stop_conditions)
         random.seed(seed)
