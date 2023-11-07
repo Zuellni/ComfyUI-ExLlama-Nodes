@@ -14,9 +14,9 @@ app.registerExtension({
 					const position = this.widgets.findIndex((w) => w.name === "text");
 
 					if (position !== -1) {
-						for (let i = position; i < this.widgets.length; i++) {
+						for (let i = position; i < this.widgets.length; i++)
 							this.widgets[i].onRemove?.();
-						}
+
 						this.widgets.length = position;
 					}
 

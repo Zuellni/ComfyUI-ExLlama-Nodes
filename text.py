@@ -1,52 +1,22 @@
-from comfy.model_management import InterruptProcessingException
-
-
-class Condition:
+class Preview:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "a": ("STRING", {"forceInput": True}),
-                "condition": (["==", "!=", ">", ">=", "<", "<=", "in", "sw", "ew"],),
-                "b": ("STRING", {"default": ""}),
-            },
-            "optional": {
-                "text": ("STRING", {"forceInput": True, "multiline": True}),
-            },
+                "text": ("STRING", {"forceInput": True}),
+            }
         }
 
     CATEGORY = "Zuellni/Text"
-    FUNCTION = "condition"
-    OUTPUT_Node = True
-    RETURN_NAMES = ("TEXT",)
-    RETURN_TYPES = ("STRING",)
+    FUNCTION = "preview"
+    OUTPUT_NODE = True
+    RETURN_TYPES = ()
 
-    def condition(self, a, condition, b, text=None):
-        try:
-            a = float(a)
-            b = float(b)
-        except:
-            pass
-
-        conditions = {
-            "==": lambda: a == b,
-            "!=": lambda: a != b,
-            ">": lambda: a > b,
-            ">=": lambda: a >= b,
-            "<": lambda: a < b,
-            "<=": lambda: a <= b,
-            "in": lambda: str(a) in str(b),
-            "sw": lambda: str(a).startswith(str(b)),
-            "ew": lambda: str(a).endswith(str(b)),
-        }
-
-        if not conditions[condition]():
-            raise InterruptProcessingException()
-
-        return (text,)
+    def preview(self, text):
+        return {"ui": {"text": [text]}}
 
 
-class Format:
+class Replace:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -62,42 +32,26 @@ class Format:
         }
 
     CATEGORY = "Zuellni/Text"
-    FUNCTION = "format"
+    FUNCTION = "replace"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def format(self, text, **vars):
-        for key, value in vars.items():
+    def replace(self, text, **inputs):
+        for key, value in inputs.items():
             if value:
                 text = text.replace(f"[{key}]", value)
 
         return (text,)
 
 
-class Preview:
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {"required": {"text": ("STRING", {"forceInput": True})}}
-
-    CATEGORY = "Zuellni/Text"
-    FUNCTION = "preview"
-    OUTPUT_NODE = True
-    RETURN_TYPES = ()
-
-    def preview(self, text):
-        return {"ui": {"text": [text]}}
-
-
 NODE_CLASS_MAPPINGS = {
-    "ZuellniTextCondition": Condition,
-    "ZuellniTextFormat": Format,
     "ZuellniTextPreview": Preview,
+    "ZuellniTextReplace": Replace,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "ZuellniTextCondition": "Condition",
-    "ZuellniTextFormat": "Format",
     "ZuellniTextPreview": "Preview",
+    "ZuellniTextReplace": "Replace",
 }
 
 WEB_DIRECTORY = "."
