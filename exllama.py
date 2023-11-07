@@ -3,10 +3,12 @@ import random
 from time import time
 
 import torch
-from comfy.model_management import soft_empty_cache
-from comfy.utils import ProgressBar
 from exllamav2 import ExLlamaV2, ExLlamaV2Cache_8bit, ExLlamaV2Config, ExLlamaV2Tokenizer
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
+
+from comfy.model_management import soft_empty_cache
+from comfy.utils import ProgressBar
+from nodes import MAX_RESOLUTION as MAX
 
 
 class Loader:
@@ -15,7 +17,7 @@ class Loader:
         return {
             "required": {
                 "model_dir": ("STRING", {"default": ""}),
-                "max_seq_len": ("INT", {"default": 2048, "max": 8192}),
+                "max_seq_len": ("INT", {"default": 1024, "max": MAX}),
             },
         }
 
@@ -50,7 +52,12 @@ class Loader:
             self.base = ExLlamaV2(self.config)
             self.base.load()
             self.cache = ExLlamaV2Cache_8bit(self.base)
-            self.generator = ExLlamaV2StreamingGenerator(self.base, self.cache, self.tokenizer)
+
+            self.generator = ExLlamaV2StreamingGenerator(
+                self.base,
+                self.cache,
+                self.tokenizer
+            )
 
     def unload(self):
         self.base = None
@@ -69,7 +76,7 @@ class Generator:
                 "model": ("EXL_MODEL",),
                 "unload": ("BOOLEAN", {"default": False}),
                 "stop_on_newline": ("BOOLEAN", {"default": False}),
-                "max_new_tokens": ("INT", {"default": 128, "max": 8192}),
+                "max_new_tokens": ("INT", {"default": 128, "max": MAX}),
                 "temperature": ("FLOAT", {"default": 0.7, "max": 2, "step": 0.01}),
                 "top_k": ("INT", {"default": 20, "max": 200}),
                 "top_p": ("FLOAT", {"default": 0.9, "max": 1, "step": 0.01}),
