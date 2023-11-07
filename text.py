@@ -3,7 +3,7 @@ class Preview:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "text": ("STRING", {"forceInput": True, "multiline": True}),
+                "text": ("STRING", {"forceInput": True}),
             }
         }
 
