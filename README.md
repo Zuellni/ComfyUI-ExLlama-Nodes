@@ -14,11 +14,11 @@ If you see any ExLlama-related errors while loading, install it manually followi
 Name | Description
 :--- | :---
 Loader | Used to load EXL2/GPTQ Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke). Clone the model repository or download all the files in it and place them in an empty directory, then specify the path in `model_dir`. The `model.safetensors` file won't work on its own.
-Generator | Generates a `string` based on the given input for use with other nodes. Default values correspond to the `simple-1` preset from [text-generation-webui](https://github.com/oobabooga/text-generation-webui).
+Generator | Generates a `string` based on the given input for use with other nodes.
 Preview | Displays generated outputs in the UI.
 Replace | Replaces variables enclosed in brackets, such as `[a]`, with their values.
 
 ## Workflow
 The image below can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/fca4b316-1d4d-4755-92fd-0c3cc2d57354)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/d98caa03-10c0-43a2-8f89-352d47a90afb)
