@@ -16,9 +16,9 @@ app.registerExtension({
 						this.widgets.length = index;
 					}
 
-					this.widgets.length = 1;
 					const options = ["STRING", {multiline: true }]
 					const widget = ComfyWidgets["STRING"](this, "output", options, app).widget;
+
 					widget.inputEl.readOnly = true;
 					widget.inputEl.style.opacity = 0.7;
 					widget.value = message.text;
