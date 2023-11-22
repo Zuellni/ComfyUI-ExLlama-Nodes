@@ -34,7 +34,6 @@ class Loader:
         self.generator = None
         self.gpu_split = None
         self.cache_8bit = False
-        self.cache_lazy = False
 
     def process(self, model_dir, gpu_split, cache_8bit, max_seq_len):
         self.unload()
@@ -42,10 +41,10 @@ class Loader:
         self.config.model_dir = model_dir
         self.config.prepare()
 
-        if gpu_split == "auto":
-            self.cache_lazy = True
-        elif gpu_split:
+        if gpu_split:
             self.gpu_split = [float(a) for a in gpu_split.split(",")]
+        else:
+            self.gpu_split = None
 
         if max_seq_len:
             self.config.max_seq_len = max_seq_len
@@ -60,16 +59,12 @@ class Loader:
             return
 
         self.base = ExLlamaV2(self.config)
+        self.base.load(gpu_split=self.gpu_split)
 
         if self.cache_8bit:
-            self.cache = ExLlamaV2Cache_8bit(self.base, lazy=self.cache_lazy)
+            self.cache = ExLlamaV2Cache_8bit(self.base)
         else:
-            self.cache = ExLlamaV2Cache(self.base, lazy=self.cache_lazy)
-
-        if self.cache_lazy:
-            self.base.load_autosplit(self.cache)
-        else:
-            self.base.load(gpu_split=self.gpu_split)
+            self.cache = ExLlamaV2Cache(self.base)
 
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
         self.generator = ExLlamaV2StreamingGenerator(self.base, self.cache, self.tokenizer)
@@ -92,14 +87,14 @@ class Generator:
                 "model": ("EXL_MODEL",),
                 "unload": ("BOOLEAN", {"default": False}),
                 "single_line": ("BOOLEAN", {"default": False}),
+                "temperature_last": ("BOOLEAN", {"default": True}),
                 "max_tokens": ("INT", {"default": 128, "max": 2**16}),
                 "temperature": ("FLOAT", {"default": 1, "max": 2, "step": 0.01}),
-                "temperature_last": ("BOOLEAN", {"default": True}),
+                "top_k": ("INT", {"max": 200}),
                 "min_p": ("FLOAT", {"default": 0.1, "max": 1, "step": 0.01}),
                 "top_p": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
-                "typical_p": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
-                "top_k": ("INT", {"max": 200}),
-                "rep_penalty": ("FLOAT", {"default": 1, "min": 1, "max": 2, "step": 0.01}),
+                "typical": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
+                "penalty": ("FLOAT", {"default": 1, "min": 1, "max": 2, "step": 0.01}),
                 "seed": ("INT", {"max": 2**64 - 1}),
                 "text": ("STRING", {"multiline": True}),
             },
@@ -119,14 +114,14 @@ class Generator:
         model,
         unload,
         single_line,
+        temperature_last,
         max_tokens,
         temperature,
-        temperature_last,
+        top_k,
         min_p,
         top_p,
-        typical_p,
-        top_k,
-        rep_penalty,
+        typical,
+        penalty,
         seed,
         text,
         info=None,
@@ -152,13 +147,13 @@ class Generator:
         random.seed(seed)
 
         settings = ExLlamaV2Sampler.Settings()
-        settings.temperature = temperature
         settings.temperature_last = temperature_last
+        settings.temperature = temperature
+        settings.top_k = top_k
         settings.min_p = min_p
         settings.top_p = top_p
-        settings.typical = typical_p
-        settings.top_k = top_k
-        settings.token_repetition_penalty = rep_penalty
+        settings.typical = typical
+        settings.token_repetition_penalty = penalty
 
         model.generator.begin_stream(input, settings, token_healing=True)
         progress = ProgressBar(max_tokens)
