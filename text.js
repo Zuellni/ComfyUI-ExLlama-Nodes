@@ -5,7 +5,11 @@ app.registerExtension({
 	name: "ZuellniText",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
 		if (nodeData.name === "ZuellniTextPreview") {
+			const onExecuted = nodeType.prototype.onExecuted;
+
 			nodeType.prototype.onExecuted = function(message) {
+				onExecuted?.apply(this, arguments);
+
 				if (this.widgets) {
 					const index = this.widgets.findIndex((w) => w.name === "output");
 
