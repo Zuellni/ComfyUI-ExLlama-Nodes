@@ -21,4 +21,4 @@ Replace | Replaces variables enclosed in brackets, such as `[a]`, with their val
 ## Workflow
 The image below can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/d98caa03-10c0-43a2-8f89-352d47a90afb)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/26acb5fd-f2d9-473a-b0cf-6c92af3bac90)
