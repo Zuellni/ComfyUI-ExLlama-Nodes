@@ -25,8 +25,8 @@ git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-a
 ## Nodes
 Name | Description
 :--- | :---
-Loader | Used to load Llama models.<br>`gpu_split` - comma-separated VRAM in MB per GPU, if using more than one.<br>`cache_8bit` - lower VRAM usage and lower speed if set to `True`.<br>`max_seq_len` - max context length, higher number equals higher VRAM usage. Setting it to `0` will make the model use default context length based on its config file.
-Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameters.<br>`unload` - unloads the model after each generation if set to `True`.<br>`single_line` - stops generation on new line.<br>`max_tokens` - max new tokens to generate, setting it to `0` will make it use all available context length.
+Loader | Load models from the `llm` directory.<br>`gpu_split` - comma-separated VRAM in MB per GPU, if using more than one.<br>`cache_8bit` - lower VRAM usage, but also lower speed if set to `True`.<br>`max_seq_len` - max context length, higher number equals higher VRAM usage. Setting it to `0` will make the model use default context length from its config.
+Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameter explanations.<br>`unload` - unloads the model after each generation if set to `True`.<br>`single_line` - stops generation on new line.<br>`max_tokens` - max new tokens to generate, setting it to `0` will make the model use all available context length.
 Preview | Displays generated text in the UI.
 Replace | Replaces variables enclosed in brackets, such as `[a]`, with their values.
 
