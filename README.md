@@ -2,7 +2,7 @@
 A simple text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
-Make sure your ComfyUI is up to date. Clone the repository to `custom_nodes` and install dependencies:
+Clone the repository to `custom_nodes` and install dependencies:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
 pip install -r requirements.txt
@@ -13,7 +13,7 @@ Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash
 ## Nodes
 Name | Description
 :--- | :---
-Loader | Used to load EXL2/GPTQ Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repo and place it in `models/llm` or specify your own `llm` path in `extra_model_paths.yaml`.
+Loader | Used to load EXL2/GPTQ Llama models. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke).<br>Clone the model repository and place it in `models/llm` or specify your own `llm` path in `extra_model_paths.yaml`.
 Generator | Generates a `string` based on the given input for use with other nodes.
 Preview | Displays generated outputs in the UI.
 Replace | Replaces variables enclosed in brackets, such as `[a]`, with their values.
