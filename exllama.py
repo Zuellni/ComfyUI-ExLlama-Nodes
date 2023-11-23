@@ -1,78 +1,89 @@
 import gc
 import random
+from pathlib import Path
 from time import time
 
 import torch
 from comfy.model_management import soft_empty_cache
 from comfy.utils import ProgressBar
-from exllamav2 import ExLlamaV2, ExLlamaV2Cache, ExLlamaV2Cache_8bit, ExLlamaV2Config, ExLlamaV2Tokenizer
+from exllamav2 import (
+    ExLlamaV2,
+    ExLlamaV2Cache,
+    ExLlamaV2Cache_8bit,
+    ExLlamaV2Config,
+    ExLlamaV2Tokenizer,
+)
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
+from folder_paths import folder_names_and_paths, get_folder_paths, models_dir
 
 
 class Loader:
     @classmethod
     def INPUT_TYPES(cls):
+        if not "llm" in folder_names_and_paths:
+            folder_names_and_paths["llm"] = ([str(Path(models_dir) / "llm")],)
+
+        for path in Path(get_folder_paths("llm")[0]).glob("*/"):
+            if (path / "config.json").is_file():
+                cls._MODELS[path.name] = path
+
+        models = list(cls._MODELS.keys())
+        default = models[0] if models else None
+
         return {
             "required": {
-                "model_dir": ("STRING", {"default": ""}),
+                "model": (models, {"default": default}),
                 "gpu_split": ("STRING", {"default": ""}),
                 "cache_8bit": ("BOOLEAN", {"default": False}),
                 "max_seq_len": ("INT", {"default": 1024, "max": 2**16}),
             },
         }
 
+    _MODELS = {}
     CATEGORY = "Zuellni/ExLlama"
-    FUNCTION = "process"
+    FUNCTION = "setup"
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("EXL_MODEL",)
 
-    def __init__(self):
-        self.config = None
-        self.base = None
-        self.cache = None
-        self.tokenizer = None
-        self.generator = None
-        self.gpu_split = None
-        self.cache_8bit = False
-
-    def process(self, model_dir, gpu_split, cache_8bit, max_seq_len):
+    def setup(self, model, gpu_split, cache_8bit, max_seq_len):
         self.unload()
         self.config = ExLlamaV2Config()
-        self.config.model_dir = model_dir
+        self.config.model_dir = __class__._MODELS[model]
         self.config.prepare()
-
-        if gpu_split:
-            self.gpu_split = [float(a) for a in gpu_split.split(",")]
-        else:
-            self.gpu_split = None
 
         if max_seq_len:
             self.config.max_seq_len = max_seq_len
 
+        self.gpu_split = [float(a) for a in gpu_split.split(",") if gpu_split]
         self.cache_8bit = cache_8bit
+
+        self.tokenizer = ExLlamaV2Tokenizer(self.config)
         self.load()
 
         return (self,)
 
     def load(self):
-        if self.base:
+        if self.ckpt:
             return
 
-        self.base = ExLlamaV2(self.config)
-        self.base.load(gpu_split=self.gpu_split)
+        self.ckpt = ExLlamaV2(self.config)
+        self.ckpt.load(gpu_split=self.gpu_split)
 
-        if self.cache_8bit:
-            self.cache = ExLlamaV2Cache_8bit(self.base)
-        else:
-            self.cache = ExLlamaV2Cache(self.base)
+        self.cache = (
+            ExLlamaV2Cache_8bit(self.ckpt)
+            if self.cache_8bit
+            else ExLlamaV2Cache(self.ckpt)
+        )
 
-        self.tokenizer = ExLlamaV2Tokenizer(self.config)
-        self.generator = ExLlamaV2StreamingGenerator(self.base, self.cache, self.tokenizer)
+        self.generator = ExLlamaV2StreamingGenerator(
+            self.ckpt,
+            self.cache,
+            self.tokenizer,
+        )
 
     def unload(self):
-        self.base = None
+        self.ckpt = None
         self.cache = None
-        self.tokenizer = None
         self.generator = None
 
         gc.collect()
@@ -143,7 +154,6 @@ class Generator:
             stop.append(model.tokenizer.newline_token_id)
 
         model.generator.set_stop_conditions(stop)
-        torch.manual_seed(seed)
         random.seed(seed)
 
         settings = ExLlamaV2Sampler.Settings()
@@ -155,20 +165,22 @@ class Generator:
         settings.typical = typical
         settings.token_repetition_penalty = penalty
 
+        start = time()
         model.generator.begin_stream(input, settings, token_healing=True)
         progress = ProgressBar(max_tokens)
-        start = time()
         eos = False
-        output = ""
+        chunks = ""
         tokens = 0
 
         while not eos and tokens < max_tokens:
-            chunk, eos, _ = model.generator.stream()
-            progress.update(1)
-            output += chunk
-            tokens += 1
+            chunk, eos, tensor = model.generator.stream()
 
-        output = output.strip()
+            if token := tensor.numel():
+                progress.update(token)
+                chunks += chunk
+                tokens += token
+
+        output = chunks.strip()
         total = round(time() - start, 2)
         speed = round(tokens / total, 2)
 
