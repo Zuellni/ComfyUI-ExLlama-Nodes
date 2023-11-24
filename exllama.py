@@ -67,7 +67,12 @@ class Loader:
             return
 
         self.ckpt = ExLlamaV2(self.config)
-        self.ckpt.load(gpu_split=self.gpu_split)
+        progress = ProgressBar(len(self.ckpt.modules))
+
+        self.ckpt.load(
+            gpu_split=self.gpu_split,
+            callback=lambda s, _: progress.update_absolute(s),
+        )
 
         self.cache = (
             ExLlamaV2Cache_8bit(self.ckpt)
