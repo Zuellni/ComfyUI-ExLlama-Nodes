@@ -10,7 +10,7 @@ pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements.txt
 Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash-attention) by uncommenting the relevant lines in the requirements file. It should lower VRAM usage but your mileage may vary.
 
 > [!IMPORTANT]
-> If you see any ExLlama-related errors while loading the nodes, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#method-2-install-from-release-with-prebuilt-extension).
+> If you see any ExLlama-related errors while loading the nodes, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
