@@ -3,4 +3,4 @@ https://github.com/turboderp/exllamav2/releases/download/v0.0.9/exllamav2-0.0.9+
 
 # optional
 # flash-attn; platform_system == "Linux"
-# https://github.com/bdashore3/flash-attention/releases/download/2.3.3/flash_attn-2.3.3+cu122-cp311-cp311-win_amd64.whl; platform_system == "Windows"
+# https://github.com/jllllll/flash-attention/releases/download/v2.3.4/flash_attn-2.3.4+cu121torch2.1cxx11abiFALSE-cp311-cp311-win_amd64.whl; platform_system == "Windows"
