@@ -24,7 +24,7 @@ git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-a
 ## Nodes
 Name | Description
 :--- | :---
-Loader | Loads models from the `llm` directory.<br>`gpu_split` - comma-separated VRAM in MB per GPU, if using more than one.<br>`cache_8bit` - lower VRAM usage but also lower speed if set to `True`.<br>`max_seq_len` - max context length, higher number equals higher VRAM usage. Setting it to `0` will make the model use default context length from its config file.
+Loader | Loads models from the `llm` directory.<br>`gpu_split` - comma-separated VRAM in GB per GPU, if using more than one.<br>`cache_8bit` - lower VRAM usage but also lower speed if set to `True`.<br>`max_seq_len` - max context length, higher number equals higher VRAM usage. Setting it to `0` will make the model use default context length from its config file.
 Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameter explanations.<br>`unload` - unloads the model after each generation if set to `True`, freeing all the VRAM used.<br>`single_line` - stops generation on new line.<br>`max_tokens` - max new tokens to generate, setting it to `0` will make the model use all available context.
 Preview | Displays generated text in the UI.
 Replace | Replaces variable names enclosed in brackets, such as `[a]`, with their values.
