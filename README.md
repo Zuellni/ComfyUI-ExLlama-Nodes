@@ -22,12 +22,18 @@ git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-a
 > You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and place the models there instead.
 
 ## Nodes
-Name | Description
-:--- | :---
-Loader | Loads models from the `llm` directory.<br>`gpu_split` - comma-separated VRAM in GB per GPU, eg `6.9, 8`, if using more than one.<br>`cache_8bit` - lower VRAM usage but also lower speed if set to `True`.<br>`max_seq_len` - max context length, higher number equals higher VRAM usage. Setting it to `0` will make the model use the default context length from its config file.
-Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameter explanations.<br>`unload` - unloads the model after each generation if set to `True`, freeing all the VRAM used.<br>`single_line` - stops generation on new line.<br>`max_tokens` - max new tokens to generate, setting it to `0` will make the model use all available context.
-Preview | Displays generated text in the UI.
-Replace | Replaces variable names enclosed in brackets, such as `[a]`, with their values.
+| Node | Description |  |
+|:---:|---|---|
+| Loader | Loads models from the `llm` directory. |  |
+|  | `gpu_split` | Comma-separated VRAM in GB per GPU, eg `6.9, 8`. |
+|  | `cache_8bit` | Lower VRAM usage but also lower speed. |
+|  | `max_seq_len` | Max context, higher number equals higher VRAM usage. `0` will default to config. |
+| Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameters. |  |
+|  | `unload` | Unloads the model after each generation. |
+|  | `single_line` | Stops the generation on new line. |
+|  | `max_tokens` | Max new tokens, `0` will use available context. |
+| Preview | Displays generated text in the UI. |  |
+| Replace | Replaces variable names enclosed in brackets, eg `[a]`, with their values. |  |
 
 ## Workflow
 The example workflow is embedded in the image below and can be opened in ComfyUI.
