@@ -22,18 +22,54 @@ git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-a
 > You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and place the models there instead.
 
 ## Nodes
-| Node | Description |  |
-|:---:|---|---|
-| Loader | Loads models from the `llm` directory. |  |
-|  | `gpu_split` | Comma-separated VRAM in GB per GPU, eg `6.9, 8`. |
-|  | `cache_8bit` | Lower VRAM usage but also lower speed. |
-|  | `max_seq_len` | Max context, higher number equals higher VRAM usage. `0` will default to config. |
-| Generator | Generates text based on the given prompt. Refer to [text-generation-webui](https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description) for parameters. |  |
-|  | `unload` | Unloads the model after each generation. |
-|  | `single_line` | Stops the generation on new line. |
-|  | `max_tokens` | Max new tokens, `0` will use available context. |
-| Preview | Displays generated text in the UI. |  |
-| Replace | Replaces variable names enclosed in brackets, eg `[a]`, with their values. |  |
+<table>
+  <tr>
+    <td><b>Loader</b></td>
+    <td colspan="2">Loads models from the <code>llm</code> directory.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>gpu_split</i></td>
+    <td>Comma-separated VRAM in GB per GPU, eg <code>6.9, 8</code>.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>cache_8bit</i></td>
+    <td>Lower VRAM usage but also lower speed.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>max_seq_len</i></td>
+    <td>Max context, higher number equals higher VRAM usage. <code>0</code> will default to config.</td>
+  </tr>
+  <tr>
+    <td><b>Generator</b></td>
+    <td colspan="2">Generates text based on the given prompt. Refer to <a href="https://github.com/oobabooga/text-generation-webui/wiki/03-%E2%80%90-Parameters-Tab#parameters-description">text-generation-webui</a> for parameters.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>unload</i></td>
+    <td>Unloads the model after each generation.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>single_line</i></td>
+    <td>Stops the generation on newline.</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><i>max_tokens</i></td>
+    <td>Max new tokens, <code>0</code> will use available context.</td>
+  </tr>
+  <tr>
+    <td><b>Preview</b></td>
+    <td colspan="2">Displays generated text in the UI.</td>
+  </tr>
+  <tr>
+    <td><b>Replace</b></td>
+    <td colspan="2">Replaces variable names enclosed in brackets, eg <code>[a]</code>, with their values.</td>
+  </tr>
+</table>
 
 ## Workflow
 The example workflow is embedded in the image below and can be opened in ComfyUI.
