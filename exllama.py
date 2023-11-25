@@ -174,18 +174,16 @@ class Generator:
         model.generator.begin_stream(input, settings, token_healing=True)
         progress = ProgressBar(max_tokens)
         eos = False
-        chunks = ""
+        output = ""
         tokens = 0
 
         while not eos and tokens < max_tokens:
-            chunk, eos, tensor = model.generator.stream()
+            chunk, eos, _ = model.generator.stream()
+            progress.update(1)
+            output += chunk
+            tokens += 1
 
-            if token := tensor.numel():
-                progress.update(token)
-                chunks += chunk
-                tokens += token
-
-        output = chunks.strip()
+        output = output.strip()
         total = round(time() - start, 2)
         speed = round(tokens / total, 2)
 
