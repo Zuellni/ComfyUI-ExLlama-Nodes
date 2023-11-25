@@ -2,20 +2,19 @@
 A simple text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
-While in the root ComfyUI directory, clone the repository to `custom_nodes` and install dependencies:
+Navigate to the root ComfyUI directory, clone the repository to `custom_nodes` and install dependencies:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-ExLlama-Nodes
 pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements.txt
 ```
 Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash-attention) by uncommenting the relevant lines in the requirements file. It should lower VRAM usage but your mileage may vary.
-
 > [!IMPORTANT]
-> If you see any ExLlama-related errors while loading the nodes, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
+> The wheels included in the requirements file should match the latest portable ComfyUI build. If you see any ExLlama-related errors while loading the nodes, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
 
-To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`. For example, if you'd like download the 4-bit 32g version of [Zephyr 7B Beta](https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ), use the following command:
+To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`. For example, if you'd like to download the 4-bit 32g version of [Zephyr 7B Beta](https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ), use the following command:
 ```
 git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-actorder_True models/llm/zephyr-7b-gptq-32g
 ```
