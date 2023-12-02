@@ -63,7 +63,7 @@ class Loader:
         return (self,)
 
     def load(self):
-        if self.ckpt:
+        if self.ckpt and self.cache and self.generator:
             return
 
         self.ckpt = ExLlamaV2(self.config)
