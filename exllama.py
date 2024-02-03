@@ -20,12 +20,12 @@ from folder_paths import folder_names_and_paths, get_folder_paths, models_dir
 class Loader:
     @classmethod
     def INPUT_TYPES(cls):
-        if not "llm" in folder_names_and_paths:
-            folder_names_and_paths["llm"] = ([str(Path(models_dir) / "llm")],)
-
-        for path in Path(get_folder_paths("llm")[0]).glob("*/"):
-            if (path / "config.json").is_file():
-                cls._MODELS[path.name] = path
+        add_model_folder_path("llm", str(Path(models_dir).joinpath("llm")))
+        for folder in get_folder_paths("llm"):
+            if Path(folder).is_dir():
+                for path in Path(folder).glob("*/"):
+                    if (path / "config.json").is_file():
+                        cls._MODELS[path.name] = path
 
         models = list(cls._MODELS.keys())
         default = models[0] if models else None
