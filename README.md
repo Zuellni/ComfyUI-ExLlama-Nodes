@@ -14,9 +14,9 @@ Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
 
-To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`. For example, if you'd like to download the 4-bit 32g version of [Zephyr 7B Beta](https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ), use the following command:
+To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`. For example, if you'd like to download [Mistral](https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2), use the following command:
 ```
-git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-actorder_True models/llm/zephyr-7b-gptq-32g
+git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2 models/llm/mistral-7b-exl2-b5
 ```
 > [!TIP]
 > You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and place the models there instead.
@@ -74,4 +74,4 @@ git clone https://huggingface.co/TheBloke/zephyr-7B-beta-GPTQ -b gptq-4bit-32g-a
 ## Workflow
 The example workflow is embedded in the image below and can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/cb20b040-9856-4dab-aed0-4b318bc2d805)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/f9a42a5b-e708-4cc4-98c3-20bf11c6233a)
