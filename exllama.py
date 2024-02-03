@@ -14,18 +14,19 @@ from exllamav2 import (
     ExLlamaV2Tokenizer,
 )
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
-from folder_paths import folder_names_and_paths, get_folder_paths, models_dir
+from folder_paths import add_model_folder_path, get_folder_paths, models_dir
 
 
 class Loader:
     @classmethod
     def INPUT_TYPES(cls):
-        add_model_folder_path("llm", str(Path(models_dir).joinpath("llm")))
+        add_model_folder_path("llm", str(Path(models_dir) / "llm"))
+
         for folder in get_folder_paths("llm"):
-            if Path(folder).is_dir():
-                for path in Path(folder).glob("*/"):
-                    if (path / "config.json").is_file():
-                        cls._MODELS[path.name] = path
+            for path in Path(folder).rglob("*/"):
+                if (path / "config.json").is_file():
+                    parent = path.relative_to(folder).parent
+                    cls._MODELS[str(parent / path.name)] = path
 
         models = list(cls._MODELS.keys())
         default = models[0] if models else None
