@@ -108,8 +108,9 @@ class Generator:
                 "max_tokens": ("INT", {"default": 128, "max": 2**16}),
                 "temperature": ("FLOAT", {"default": 1, "max": 2, "step": 0.01}),
                 "top_k": ("INT", {"max": 200}),
-                "min_p": ("FLOAT", {"default": 0.1, "max": 1, "step": 0.01}),
-                "top_p": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
+                "top_a": ("FLOAT", {"max": 1, "step": 0.01}),
+                "min_p": ("FLOAT", {"max": 1, "step": 0.01}),
+                "top_p": ("FLOAT", {"max": 1, "step": 0.01}),
                 "typical": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
                 "penalty": ("FLOAT", {"default": 1, "min": 1, "max": 2, "step": 0.01}),
                 "seed": ("INT", {"max": 2**64 - 1}),
@@ -135,6 +136,7 @@ class Generator:
         max_tokens,
         temperature,
         top_k,
+        top_a,
         min_p,
         top_p,
         typical,
@@ -166,6 +168,7 @@ class Generator:
         settings.temperature_last = temperature_last
         settings.temperature = temperature
         settings.top_k = top_k
+        settings.top_a = top_a
         settings.min_p = min_p
         settings.top_p = top_p
         settings.typical = typical
