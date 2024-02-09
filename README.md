@@ -9,8 +9,9 @@ pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements.txt
 ```
 Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash-attention) by uncommenting relevant lines in the requirements file. It should lower VRAM usage but your mileage may vary.
 > [!CAUTION]
-> The wheels included in the requirements file should match the `stable pytorch 2.1 cu121` build of ComfyUI.<br>
-> If you see any ExLlama-related errors while loading the nodes, try to install it following the [official instructions](https://github.com/turboderp/exllamav2#installation).<br>
+> Manual installation without any managers is recommended since the requirements depend on your system.<br>
+> Wheels included in the requirements file match the `stable pytorch 2.1 cu121` portable build of ComfyUI.<br>
+> If you see any ExLlama-related errors while the nodes are loading, try to install it following the [official instructions](https://github.com/turboderp/exllamav2#installation).<br>
 > Keep in mind that wheels >= `0.0.13` require `pytorch 2.2`.
 
 ## Usage
