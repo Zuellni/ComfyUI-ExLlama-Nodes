@@ -106,13 +106,13 @@ class Generator:
                 "single_line": ("BOOLEAN", {"default": False}),
                 "temperature_last": ("BOOLEAN", {"default": True}),
                 "max_tokens": ("INT", {"default": 128, "max": 2**16}),
-                "temperature": ("FLOAT", {"default": 1, "max": 2, "step": 0.01}),
+                "temperature": ("FLOAT", {"default": 1, "max": 5, "step": 0.01}),
                 "top_k": ("INT", {"max": 200}),
                 "top_a": ("FLOAT", {"max": 1, "step": 0.01}),
                 "min_p": ("FLOAT", {"max": 1, "step": 0.01}),
-                "top_p": ("FLOAT", {"max": 1, "step": 0.01}),
+                "top_p": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
                 "typical": ("FLOAT", {"default": 1, "max": 1, "step": 0.01}),
-                "penalty": ("FLOAT", {"default": 1, "min": 1, "max": 2, "step": 0.01}),
+                "penalty": ("FLOAT", {"default": 1, "min": 1, "max": 3, "step": 0.01}),
                 "seed": ("INT", {"max": 2**64 - 1}),
                 "text": ("STRING", {"multiline": True}),
             },
@@ -175,7 +175,7 @@ class Generator:
         settings.token_repetition_penalty = penalty
 
         start = time()
-        model.generator.begin_stream(input, settings, token_healing=True)
+        model.generator.begin_stream(input, settings)
         progress = ProgressBar(max_tokens)
         eos = False
         output = ""

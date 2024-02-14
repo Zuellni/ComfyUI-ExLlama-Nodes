@@ -1,0 +1,2 @@
+exllamav2
+flash-attn

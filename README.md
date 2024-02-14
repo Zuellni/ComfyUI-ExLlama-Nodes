@@ -2,17 +2,27 @@
 A simple text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
-Navigate to the root ComfyUI directory, clone the repository to `custom_nodes` and install dependencies:
+Navigate to the root ComfyUI directory and clone the repository to `custom_nodes`:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-ExLlama-Nodes
-pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements.txt
 ```
-Optionally, you can install [flash-attention](https://github.com/Dao-AILab/flash-attention) by uncommenting relevant lines in the requirements file. It should lower VRAM usage but your mileage may vary.
+
+Install the requirements depending on your system:
+```
+pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements-VERSION.txt
+```
+
+`requirements-no-wheels.txt` contains JIT version of ExLlamaV2 and [Flash Attention](https://github.com/Dao-AILab/flash-attention).<br>
+`requirements-torch-21.txt` contains Windows wheels for Python 3.11, Torch 2.1, CUDA 12.1.<br>
+`requirements-torch-22.txt` contains Windows wheels for Python 3.11, Torch 2.2, CUDA 12.1.
+
+Check what you need with:
+```
+python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
+```
+
 > [!CAUTION]
-> Manual installation without any managers is recommended since the requirements depend on your system.<br>
-> Wheels included in the requirements file match the `stable pytorch 2.1 cu121` portable build of ComfyUI.<br>
-> If you see any ExLlama-related errors while the nodes are loading, try to install it following the [official instructions](https://github.com/turboderp/exllamav2#installation).<br>
-> Keep in mind that wheels >= `0.0.13` require `pytorch 2.2`.
+> If none of the included wheels work for you or there are any ExLlama-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation). Keep in mind that wheels >= `0.0.13` require Torch 2.2.
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging](https://huggingface.co/LoneStriker) [Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
