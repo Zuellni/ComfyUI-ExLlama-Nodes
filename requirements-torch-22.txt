@@ -1,2 +1,2 @@
-https://github.com/turboderp/exllamav2/releases/download/0.0.13.post1/exllamav2-0.0.13.post1+cu121-cp311-cp311-win_amd64.whl
+https://github.com/turboderp/exllamav2/releases/download/0.0.13.post2/exllamav2-0.0.13.post2+cu121-cp311-cp311-win_amd64.whl
 https://github.com/bdashore3/flash-attention/releases/download/v2.5.2/flash_attn-2.5.2+cu122torch2.2.0cxx11abiFALSE-cp311-cp311-win_amd64.whl
