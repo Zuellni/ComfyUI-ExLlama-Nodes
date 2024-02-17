@@ -1,3 +1,4 @@
+import gc
 import random
 from pathlib import Path
 from time import time
@@ -92,6 +93,8 @@ class Loader:
         self.cache = None
         self.tokenizer = None
         self.generator = None
+
+        gc.collect()
         soft_empty_cache()
 
 
