@@ -12,22 +12,35 @@ Install the requirements depending on your system:
 pip install -r custom_nodes/ComfyUI-ExLlama-Nodes/requirements-VERSION.txt
 ```
 
-`requirements-no-wheels.txt` contains JIT version of ExLlamaV2 and [Flash Attention](https://github.com/Dao-AILab/flash-attention).<br>
-`requirements-torch-21.txt` contains Windows wheels for Python 3.11.x, Torch 2.1.x, CUDA 12.1.<br>
-`requirements-torch-22.txt` contains Windows wheels for Python 3.11.x, Torch 2.2.x, CUDA 12.1.
+<table>
+  <tr>
+    <td><i>requirements-no-wheels.txt</i></td>
+    <td><a href="https://github.com/turboderp/exllamav2">ExLlamaV2</a> and <a href="https://github.com/Dao-AILab/flash-attention">FlashAttention</a>, no wheels.</td>
+  </tr>
+  <tr>
+    <td><i>requirements-torch-21.txt</i></td>
+    <td>Windows wheels for Python 3.11, Torch 2.1, CUDA 12.1.</td>
+  </tr>
+  <tr>
+    <td><i>requirements-torch-22.txt</i></td>
+    <td>Windows wheels for Python 3.11, Torch 2.2, CUDA 12.1.</td>
+  </tr>
+</table>
 
-Check what you need with:
+Check what version you need with:
 ```
 python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
 ```
 
 > [!CAUTION]
-> If none of the wheels work for you or there are any ExLlama-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation). Keep in mind that wheels >= `0.0.13` require Torch 2.2.
+> If none of the wheels work for you or there are any ExLlama-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
+> Keep in mind that wheels >= `0.0.13` require Torch 2.2.
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging](https://huggingface.co/LoneStriker) [Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
 
-To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`. For example, if you'd like to download [Mistral-7B](https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2), use the following command:
+To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`.
+For example, if you'd like to download [Mistral-7B](https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2), use the following command:
 ```
 git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2 models/llm/mistral-7b-exl2-b5
 ```
