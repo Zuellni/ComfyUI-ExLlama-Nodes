@@ -61,8 +61,6 @@ class Loader:
         return (self,)
 
     def load(self):
-        unload_all_models()
-
         if self.ckpt and self.cache and self.tokenizer and self.generator:
             return
 
@@ -151,6 +149,9 @@ class Generator:
         if not text:
             return ("",)
 
+        if unload:
+            unload_all_models()
+
         model.load()
         input = model.tokenizer.encode(text, encode_special_tokens=True)
         input_len = input.shape[-1]
@@ -198,15 +199,15 @@ class Generator:
             f"({input_len} context, {tokens} tokens, {speed}t/s)",
         )
 
-        if unload:
-            model.unload()
-
         if id and info and "workflow" in info:
             nodes = info["workflow"]["nodes"]
             node = next((n for n in nodes if str(n["id"]) == id), None)
 
             if node:
                 node["widgets_values"] = [output]
+
+        if unload:
+            model.unload()
 
         return (output,)
 
