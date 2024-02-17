@@ -100,4 +100,4 @@ git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-
 ## Workflow
 The example workflow is embedded in the image below and can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/f9a42a5b-e708-4cc4-98c3-20bf11c6233a)
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/e8808413-3ac5-4666-b305-09a30388dbe7)
