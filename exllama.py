@@ -61,33 +61,45 @@ class Loader:
         return (self,)
 
     def load(self):
-        if self.ckpt and self.cache and self.tokenizer and self.generator:
+        if (
+            hasattr(self, "model") and
+            hasattr(self, "cache") and
+            hasattr(self, "tokenizer") and
+            hasattr(self, "generator") and
+            self.model and
+            self.cache and
+            self.tokenizer and
+            self.generator
+        ):
             return
 
-        self.ckpt = ExLlamaV2(self.config)
-        progress = ProgressBar(len(self.ckpt.modules))
+        self.model = ExLlamaV2(self.config)
+        progress = ProgressBar(len(self.model.modules))
 
-        self.ckpt.load(
+        self.model.load(
             gpu_split=self.gpu_split,
             callback=lambda s, _: progress.update_absolute(s),
         )
 
         self.cache = (
-            ExLlamaV2Cache_8bit(self.ckpt)
+            ExLlamaV2Cache_8bit(self.model)
             if self.cache_8bit
-            else ExLlamaV2Cache(self.ckpt)
+            else ExLlamaV2Cache(self.model)
         )
 
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
 
         self.generator = ExLlamaV2StreamingGenerator(
-            model=self.ckpt,
+            model=self.model,
             cache=self.cache,
             tokenizer=self.tokenizer,
         )
 
     def unload(self):
-        self.ckpt = None
+        if hasattr(self, "model") and self.model:
+            self.model.unload()
+
+        self.model = None
         self.cache = None
         self.tokenizer = None
         self.generator = None
@@ -151,6 +163,7 @@ class Generator:
 
         if unload:
             unload_all_models()
+            model.unload()
 
         model.load()
         input = model.tokenizer.encode(text, encode_special_tokens=True)
@@ -199,15 +212,15 @@ class Generator:
             f"({input_len} context, {tokens} tokens, {speed}t/s)",
         )
 
+        if unload:
+            model.unload()
+
         if id and info and "workflow" in info:
             nodes = info["workflow"]["nodes"]
             node = next((n for n in nodes if str(n["id"]) == id), None)
 
             if node:
                 node["widgets_values"] = [output]
-
-        if unload:
-            model.unload()
 
         return (output,)
 
