@@ -1,13 +1,13 @@
-class Preview:
+_CATEGORY = "Zuellni/Text"
+_MAPPING = "ZuellniText"
+
+
+class Previewer:
     @classmethod
     def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "text": ("STRING", {"forceInput": True}),
-            }
-        }
+        return {"required": {"text": ("STRING", {"forceInput": True})}}
 
-    CATEGORY = "Zuellni/Text"
+    CATEGORY = _CATEGORY
     FUNCTION = "preview"
     OUTPUT_NODE = True
     RETURN_TYPES = ()
@@ -16,13 +16,11 @@ class Preview:
         return {"ui": {"text": [text]}}
 
 
-class Replace:
+class Replacer:
     @classmethod
     def INPUT_TYPES(cls):
         return {
-            "required": {
-                "text": ("STRING", {"multiline": True}),
-            },
+            "required": {"text": ("STRING", {"multiline": True})},
             "optional": {
                 "a": ("STRING", {"forceInput": True, "multiline": True}),
                 "b": ("STRING", {"forceInput": True, "multiline": True}),
@@ -31,7 +29,7 @@ class Replace:
             },
         }
 
-    CATEGORY = "Zuellni/Text"
+    CATEGORY = _CATEGORY
     FUNCTION = "replace"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
@@ -45,13 +43,13 @@ class Replace:
 
 
 NODE_CLASS_MAPPINGS = {
-    "ZuellniTextPreview": Preview,
-    "ZuellniTextReplace": Replace,
+    f"{_MAPPING}Previewer": Previewer,
+    f"{_MAPPING}Replacer": Replacer,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "ZuellniTextPreview": "Preview",
-    "ZuellniTextReplace": "Replace",
+    f"{_MAPPING}Previewer": "Preview",
+    f"{_MAPPING}Replacer": "Replace",
 }
 
 WEB_DIRECTORY = "."

@@ -4,7 +4,7 @@ import { ComfyWidgets } from "../../../scripts/widgets.js";
 app.registerExtension({
 	name: "ZuellniText",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.name === "ZuellniTextPreview") {
+		if (nodeData.name === "ZuellniTextPreviewer") {
 			const onExecuted = nodeType.prototype.onExecuted;
 
 			nodeType.prototype.onExecuted = function(message) {
@@ -20,7 +20,7 @@ app.registerExtension({
 						this.widgets.length = index;
 					}
 
-					const options = ["STRING", {multiline: true }]
+					const options = ["STRING", {multiline: true }];
 					const widget = ComfyWidgets["STRING"](this, "output", options, app).widget;
 
 					widget.inputEl.readOnly = true;
