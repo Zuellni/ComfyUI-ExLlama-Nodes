@@ -40,12 +40,12 @@ git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-
   <tr>
     <td></td>
     <td><i>cache_bits</i></td>
-    <td>Lowers VRAM usage as well as generation speed.</td>
+    <td>Lower value equals lower VRAM usage but also impacts generation speed.</td>
   </tr>
   <tr>
     <td></td>
     <td><i>max_seq_len</i></td>
-    <td>Max context, higher number equals higher VRAM usage. <code>0</code> will default to config.</td>
+    <td>Max context, higher value equals higher VRAM usage. <code>0</code> will default to config.</td>
   </tr>
   <tr>
     <td><b>Generator</b></td>
