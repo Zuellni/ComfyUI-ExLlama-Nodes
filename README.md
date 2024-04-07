@@ -1,5 +1,5 @@
 # ComfyUI ExLlamaV2 Nodes
-A simple text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
+A local text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
 Make sure your ComfyUI is up to date and clone the repository to `custom_nodes`:
@@ -15,7 +15,7 @@ pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 > [!CAUTION]
 > If you're on Windows or see any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
 
-Check which wheel you need with:
+Check which [wheel](https://github.com/turboderp/exllamav2/releases) you need with:
 ```
 python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
 ```
