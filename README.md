@@ -2,39 +2,23 @@
 A simple text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
-Navigate to the root ComfyUI directory and clone the repository to `custom_nodes`:
+Make sure your ComfyUI is up to date and clone the repository to `custom_nodes`:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-ExLlamaV2-Nodes
 ```
 
-Install the requirements depending on your system:
+Install the requirements:
 ```
-pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements-VERSION.txt
-```
-
-<table>
-  <tr>
-    <td><i>requirements-no-wheels.txt</i></td>
-    <td><a href="https://github.com/turboderp/exllamav2">ExLlamaV2</a> and <a href="https://github.com/Dao-AILab/flash-attention">FlashAttention</a>, no wheels.</td>
-  </tr>
-  <tr>
-    <td><i>requirements-torch-21.txt</i></td>
-    <td>Windows wheels for Python 3.11, Torch 2.1, CUDA 12.1.</td>
-  </tr>
-  <tr>
-    <td><i>requirements-torch-22.txt</i></td>
-    <td>Windows wheels for Python 3.11, Torch 2.2, CUDA 12.1.</td>
-  </tr>
-</table>
-
-Check what version you need with:
-```
-python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
+pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
 > [!CAUTION]
-> If none of the wheels work for you or there are any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
-> Keep in mind that wheels >= `0.0.13` require Torch 2.2.
+> If you're on Windows or see any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
+
+Check which wheel you need with:
+```
+python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
+```
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging](https://huggingface.co/LoneStriker) [Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
@@ -55,13 +39,8 @@ git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-
   </tr>
   <tr>
     <td></td>
-    <td><i>gpu_split</i></td>
-    <td>Comma-separated VRAM in GB per GPU, eg <code>6.9, 8</code>.</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><i>cache_8bit</i></td>
-    <td>Lower VRAM usage but also lower speed.</td>
+    <td><i>cache_bits</i></td>
+    <td>Lowers VRAM usage as well as generation speed.</td>
   </tr>
   <tr>
     <td></td>
@@ -88,11 +67,11 @@ git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-
     <td>Max new tokens, <code>0</code> will use available context.</td>
   </tr>
   <tr>
-    <td><b>Preview</b></td>
+    <td><b>Previewer</b></td>
     <td colspan="2">Displays generated text in the UI.</td>
   </tr>
   <tr>
-    <td><b>Replace</b></td>
+    <td><b>Replacer</b></td>
     <td colspan="2">Replaces variable names enclosed in brackets, eg <code>[a]</code>, with their values.</td>
   </tr>
 </table>
