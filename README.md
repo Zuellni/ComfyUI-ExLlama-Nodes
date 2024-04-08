@@ -1,8 +1,8 @@
 # ComfyUI ExLlamaV2 Nodes
-A local text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
+A simple local text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
-Make sure your ComfyUI is up to date and clone the repository to `custom_nodes`:
+Clone the repository to `custom_nodes`:
 ```
 git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-ExLlamaV2-Nodes
 ```
@@ -12,13 +12,18 @@ Install the requirements:
 pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
-> [!CAUTION]
-> If you're on Windows or see any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
+On Windows install one of the precompiled [wheels](https://github.com/turboderp/exllamav2/releases) instead:
+```
+pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.xx/exllamav2-0.0.xx+cuXXX-cpXXX-cpXXX-win_amd64.whl
+```
 
-Check which [wheel](https://github.com/turboderp/exllamav2/releases) you need with:
+Check which one you need with:
 ```
-python -c "import platform; import torch; print(f'Python {platform.python_version()}, Torch {torch.__version__}, CUDA {torch.version.cuda}')"
+python -c "import sys, torch; print(f'cu{torch.version.cuda.replace('.', '')}-cp{sys.version_info[0]}{sys.version_info[1]}')"
 ```
+
+> [!CAUTION]
+> If you see any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
 
 ## Usage
 Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging](https://huggingface.co/LoneStriker) [Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.

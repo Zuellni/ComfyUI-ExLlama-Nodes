@@ -1,1 +1,1 @@
-exllamav2>=0.0.16
+exllamav2>=0.0.16; platform_system == "Linux"
