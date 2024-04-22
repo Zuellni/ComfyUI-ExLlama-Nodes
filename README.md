@@ -45,7 +45,7 @@ git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw mo
   <tr>
     <td></td>
     <td><i>cache_bits</i></td>
-    <td>Lower value equals lower VRAM usage but also impacts generation speed.</td>
+    <td>Lower value equals lower VRAM usage but also impacts generation speed and quality.</td>
   </tr>
   <tr>
     <td></td>
