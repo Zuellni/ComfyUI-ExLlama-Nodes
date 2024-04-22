@@ -1,5 +1,5 @@
 # ComfyUI ExLlamaV2 Nodes
-A simple local text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) utilizing [ExLlamaV2](https://github.com/turboderp/exllamav2).
+A simple local text generator for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) using [ExLlamaV2](https://github.com/turboderp/exllamav2).
 
 ## Installation
 Clone the repository to `custom_nodes`:
@@ -12,7 +12,7 @@ Install the requirements:
 pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
-On Windows install one of the precompiled [wheels](https://github.com/turboderp/exllamav2/releases) instead:
+On Windows, install one of the precompiled [wheels](https://github.com/turboderp/exllamav2/releases) instead:
 ```
 pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.xx/exllamav2-0.0.xx+cuXXX-cpXXX-cpXXX-win_amd64.whl
 ```
@@ -23,18 +23,18 @@ python -c "import sys, torch; print(f'cu{torch.version.cuda.replace('.', '')}-cp
 ```
 
 > [!CAUTION]
-> If you see any ExLlamaV2-related errors while the nodes are loading, try to install it manually following the [official instructions](https://github.com/turboderp/exllamav2#installation).
+> If you see errors related to ExLlamaV2 while loading the nodes, try to install it following the [official instructions](https://github.com/turboderp/exllamav2#installation).
 
 ## Usage
-Only EXL2 and 4-bit GPTQ models are supported. You can find a lot of them on [Hugging](https://huggingface.co/LoneStriker) [Face](https://huggingface.co/TheBloke). Refer to the model card in each repository for details about quant differences and instruction formats.
+Only EXL2, 4-bit GPTQ, and unquantized HF models are supported. You can find them on [Hugging Face](https://huggingface.co). See the model card in each repository for details on instruction formats.
 
 To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`.
-For example, if you'd like to download [Mistral-7B](https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2), use the following command:
+For example, if you'd like to download the 6-bit [Llama-3-8B-Instruct](https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2), use the following command:
 ```
-git clone https://huggingface.co/LoneStriker/Mistral-7B-Instruct-v0.2-5.0bpw-h6-exl2-2 models/llm/mistral-7b-exl2-b5
+git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw models/llm/Llama-3-8B-Instruct-exl2-6.0bpw
 ```
 > [!TIP]
-> You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and place the models there instead.
+> You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and put the models there instead.
 
 ## Nodes
 <table>

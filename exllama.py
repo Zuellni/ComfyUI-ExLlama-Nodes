@@ -3,9 +3,6 @@ import random
 from pathlib import Path
 from time import time
 
-import torch
-from comfy.model_management import soft_empty_cache, unload_all_models
-from comfy.utils import ProgressBar
 from exllamav2 import (
     ExLlamaV2,
     ExLlamaV2Cache,
@@ -15,6 +12,9 @@ from exllamav2 import (
     ExLlamaV2Tokenizer,
 )
 from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
+
+from comfy.model_management import soft_empty_cache, unload_all_models
+from comfy.utils import ProgressBar
 from folder_paths import add_model_folder_path, get_folder_paths, models_dir
 
 _CATEGORY = "Zuellni/ExLlama"
@@ -38,7 +38,7 @@ class Loader:
         return {
             "required": {
                 "model": (models, {"default": default}),
-                "cache_bits": ((4, 8, 16), {"default": 4}),
+                "cache_bits": ((4, 8, 16), {"default": 16}),
                 "max_seq_len": ("INT", {"default": 2048, "max": 2**20}),
             },
         }
