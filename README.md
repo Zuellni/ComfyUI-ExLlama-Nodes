@@ -84,5 +84,4 @@ git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw mo
 ## Workflow
 The example workflow is embedded in the image below and can be opened in ComfyUI.
 
-![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/d496acee-d556-40d4-aef4-5ca34247f2e4)
-
+![workflow](https://github.com/Zuellni/ComfyUI-ExLlama-Nodes/assets/123005779/bf688acb-6f7a-4410-98ff-cf22b6937ae7)
