@@ -52,10 +52,7 @@ class Loader:
     def setup(self, model, cache_bits, max_seq_len):
         self.unload()
         self.cache_bits = cache_bits
-
-        self.config = ExLlamaV2Config()
-        self.config.model_dir = __class__._MODELS[model]
-        self.config.prepare()
+        self.config = ExLlamaV2Config(__class__._MODELS[model])
 
         if max_seq_len:
             self.config.max_seq_len = max_seq_len
