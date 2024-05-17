@@ -3,15 +3,8 @@ import random
 from pathlib import Path
 from time import time
 
-from exllamav2 import (
-    ExLlamaV2,
-    ExLlamaV2Cache,
-    ExLlamaV2Cache_8bit,
-    ExLlamaV2Cache_Q4,
-    ExLlamaV2Config,
-    ExLlamaV2Tokenizer,
-)
-from exllamav2.generator import ExLlamaV2Sampler, ExLlamaV2StreamingGenerator
+from exllamav2 import *
+from exllamav2.generator import *
 
 from comfy.model_management import soft_empty_cache, unload_all_models
 from comfy.utils import ProgressBar
@@ -56,8 +49,10 @@ class Loader:
 
         if max_seq_len:
             self.config.max_seq_len = max_seq_len
-            self.config.max_input_len = max_seq_len
-            self.config.max_attention_len = max_seq_len**2
+
+            if self.config.max_input_len > max_seq_len:
+                self.config.max_input_len = max_seq_len
+                self.config.max_attention_len = max_seq_len**2
 
         return (self,)
 
@@ -85,14 +80,9 @@ class Loader:
             else ExLlamaV2Cache(self.model, lazy=True)
         )
 
-        self.model.load_autosplit(self.cache, callback=lambda _, __: progress.update(1))
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
-
-        self.generator = ExLlamaV2StreamingGenerator(
-            model=self.model,
-            cache=self.cache,
-            tokenizer=self.tokenizer,
-        )
+        self.model.load_autosplit(self.cache, callback=lambda _, __: progress.update(1))
+        self.generator = ExLlamaV2StreamingGenerator(self.model, self.cache, self.tokenizer)
 
     def unload(self):
         if hasattr(self, "model") and self.model:
