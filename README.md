@@ -31,6 +31,7 @@ Only EXL2, 4-bit GPTQ, and unquantized HF models are supported. You can find the
 To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`.
 For example, if you'd like to download the 6-bit [Llama-3-8B-Instruct](https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2), use the following command:
 ```
+git install lfs
 git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw models/llm/Llama-3-8B-Instruct-exl2-6.0bpw
 ```
 > [!TIP]
