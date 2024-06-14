@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-exllama-nodes"
+description = "A simple local text generator for ComfyUI utilizing [a/ExLlamaV2](https://github.com/turboderp/exllamav2).\n[w/NOTE:Manual package installation is required.]"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["exllamav2>=0.0.17; platform_system == \"Linux\""]
+
+[project.urls]
+Repository = "https://github.com/Zuellni/ComfyUI-ExLlama-Nodes"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-ExLlama-Nodes"
+Icon = ""
