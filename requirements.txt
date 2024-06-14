@@ -1,1 +1,2 @@
-exllamav2>=0.0.17; platform_system == "Linux"
+exllamav2; platform_system == "Linux"
+flash-attn; platform_system == "Linux"

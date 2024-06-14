@@ -31,7 +31,7 @@ class Loader:
         return {
             "required": {
                 "model": (models, {"default": default}),
-                "cache_bits": ((4, 8, 16), {"default": 16}),
+                "cache_bits": ((4, 6, 8, 16), {"default": 16}),
                 "max_seq_len": ("INT", {"default": 2048, "max": 2**20}),
             },
         }
@@ -75,14 +75,16 @@ class Loader:
         self.cache = (
             ExLlamaV2Cache_Q4(self.model, lazy=True)
             if self.cache_bits == 4
-            else ExLlamaV2Cache_8bit(self.model, lazy=True)
+            else ExLlamaV2Cache_Q6(self.model, lazy=True)
+            if self.cache_bits == 6
+            else ExLlamaV2Cache_Q8(self.model, lazy=True)
             if self.cache_bits == 8
             else ExLlamaV2Cache(self.model, lazy=True)
         )
 
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
         self.model.load_autosplit(self.cache, callback=lambda _, __: progress.update(1))
-        self.generator = ExLlamaV2StreamingGenerator(self.model, self.cache, self.tokenizer)
+        self.generator = ExLlamaV2DynamicGenerator(self.model, self.cache, self.tokenizer)
 
     def unload(self):
         if hasattr(self, "model") and self.model:
@@ -155,6 +157,7 @@ class Generator:
             model.unload()
 
         model.load()
+        random.seed(seed)
         input = model.tokenizer.encode(text, encode_special_tokens=True)
         input_len = input.shape[-1]
         max_len = model.config.max_seq_len - input_len
@@ -164,10 +167,7 @@ class Generator:
             max_tokens = max_len
 
         if single_line:
-            stop.append(model.tokenizer.newline_token_id)
-
-        model.generator.set_stop_conditions(stop)
-        random.seed(seed)
+            stop.append("\n")
 
         settings = ExLlamaV2Sampler.Settings()
         settings.temperature = temperature
@@ -179,21 +179,25 @@ class Generator:
         settings.token_repetition_penalty = repetition_penalty
         settings.temperature_last = temperature_last
 
-        start = time()
-        model.generator.begin_stream_ex(input, settings)
+        job = ExLlamaV2DynamicJob(input, max_new_tokens=max_tokens, stop_conditions=stop)
+        model.generator.enqueue(job)
+
         progress = ProgressBar(max_tokens)
+        start = time()
+
         eos = False
-        output = ""
+        chunks = []
         tokens = 0
 
-        while not eos and tokens < max_tokens:
-            response = model.generator.stream_ex()
-            output += response["chunk"]
-            eos = response["eos"]
-            progress.update(1)
-            tokens += 1
+        while not eos:
+            for response in model.generator.iterate():
+                if response["stage"] == "streaming":
+                    chunks.append(response.get("text", ""))
+                    eos = response["eos"]
+                    progress.update(1)
+                    tokens += 1
 
-        output = output.strip()
+        output = "".join(chunks).strip()
         total = round(time() - start, 2)
         speed = round(tokens / total, 2)
 
