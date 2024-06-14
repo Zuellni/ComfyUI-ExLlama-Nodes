@@ -1,4 +1,5 @@
 import gc
+import json
 import random
 from pathlib import Path
 from time import time
@@ -106,7 +107,7 @@ class Generator:
             "required": {
                 "model": ("EXL_MODEL",),
                 "unload": ("BOOLEAN", {"default": False}),
-                "single_line": ("BOOLEAN", {"default": False}),
+                "stop_conditions": ("STRING", {"default": r'["\n"]'}),
                 "max_tokens": ("INT", {"default": 128, "max": 2**20}),
                 "temperature": ("FLOAT", {"default": 1, "max": 5, "step": 0.01}),
                 "top_k": ("INT", {"max": 200}),
@@ -134,7 +135,7 @@ class Generator:
         self,
         model,
         unload,
-        single_line,
+        stop_conditions,
         max_tokens,
         temperature,
         top_k,
@@ -149,7 +150,7 @@ class Generator:
         info=None,
         id=None,
     ):
-        if not text:
+        if not text.strip():
             return ("",)
 
         if unload:
@@ -166,8 +167,9 @@ class Generator:
         if not max_tokens or max_tokens > max_len:
             max_tokens = max_len
 
-        if single_line:
-            stop.append("\n")
+        if stop_conditions.strip():
+            stop_conditions = json.loads(stop_conditions)
+            stop.extend(stop_conditions)
 
         settings = ExLlamaV2Sampler.Settings()
         settings.temperature = temperature
@@ -192,8 +194,9 @@ class Generator:
         while not eos:
             for response in model.generator.iterate():
                 if response["stage"] == "streaming":
-                    chunks.append(response.get("text", ""))
+                    chunk = response.get("text", "")
                     eos = response["eos"]
+                    chunks.append(chunk)
                     progress.update(1)
                     tokens += 1
 
