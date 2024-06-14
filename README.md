@@ -12,7 +12,7 @@ Install the requirements:
 pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
-On Windows, install one of the precompiled [wheels](https://github.com/turboderp/exllamav2/releases) instead:
+On Windows, install one of the precompiled [wheels](https://github.com/turboderp/exllamav2/releases/latest) instead:
 ```
 pip install https://github.com/turboderp/exllamav2/releases/download/v0.0.xx/exllamav2-0.0.xx+cuXXX-cpXXX-cpXXX-win_amd64.whl
 ```
