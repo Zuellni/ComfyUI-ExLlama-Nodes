@@ -13,14 +13,15 @@ pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
 ## Usage
-Only EXL2, 4-bit GPTQ, and unquantized HF models are supported. You can find them on [Hugging Face](https://huggingface.co).
+Only EXL2, 4-bit GPTQ and FP16 HF models are supported. You can find them on [Hugging Face](https://huggingface.co).
 
-To use a model with the nodes, you should clone its repository with git or manually download all the files and place them in `models/llm`.
+To use a model with the nodes, you should clone its repository with `git` or manually download all the files and place them in `models/llm`.
 For example, if you want to download the 6-bit [Llama-3-8B-Instruct](https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2), use the following command:
 ```
 git install lfs
 git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw models/llm/Llama-3-8B-Instruct-exl2-6.0bpw
 ```
+
 > [!TIP]
 > You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and put the models there instead.
 
