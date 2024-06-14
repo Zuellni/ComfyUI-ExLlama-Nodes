@@ -33,6 +33,8 @@ class Loader:
             "required": {
                 "model": (models, {"default": default}),
                 "cache_bits": ((4, 6, 8, 16), {"default": 16}),
+                "fast_tensors": ("BOOLEAN", {"default": True}),
+                "flash_attention": ("BOOLEAN", {"default": True}),
                 "max_seq_len": ("INT", {"default": 2048, "max": 2**20}),
             },
         }
@@ -43,10 +45,12 @@ class Loader:
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("EXL_MODEL",)
 
-    def setup(self, model, cache_bits, max_seq_len):
+    def setup(self, model, cache_bits, fast_tensors, flash_attention, max_seq_len):
         self.unload()
         self.cache_bits = cache_bits
         self.config = ExLlamaV2Config(__class__._MODELS[model])
+        self.config.fasttensors = fast_tensors
+        self.config.no_flash_attn = not flash_attention
 
         if max_seq_len:
             self.config.max_seq_len = max_seq_len
@@ -85,7 +89,13 @@ class Loader:
 
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
         self.model.load_autosplit(self.cache, callback=lambda _, __: progress.update(1))
-        self.generator = ExLlamaV2DynamicGenerator(self.model, self.cache, self.tokenizer)
+
+        self.generator = ExLlamaV2DynamicGenerator(
+            model=self.model,
+            cache=self.cache,
+            tokenizer=self.tokenizer,
+            paged=not self.config.no_flash_attn,
+        )
 
     def unload(self):
         if hasattr(self, "model") and self.model:
@@ -181,12 +191,15 @@ class Generator:
         settings.token_repetition_penalty = repetition_penalty
         settings.temperature_last = temperature_last
 
-        job = ExLlamaV2DynamicJob(input, max_new_tokens=max_tokens, stop_conditions=stop)
-        model.generator.enqueue(job)
+        job = ExLlamaV2DynamicJob(
+            input_ids=input,
+            max_new_tokens=max_tokens,
+            stop_conditions=stop,
+        )
 
         progress = ProgressBar(max_tokens)
+        model.generator.enqueue(job)
         start = time()
-
         eos = False
         chunks = []
         tokens = 0
