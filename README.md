@@ -8,7 +8,7 @@ git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-
 pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
 ```
 
-Use wheels for [ExLlamaV2](https://github.com/turboderp/exllamav2/releases/latest) and [Flash Attention](https://github.com/bdashore3/flash-attention/releases/latest) on Windows:
+Use wheels for [ExLlamaV2](https://github.com/turboderp/exllamav2/releases/latest) and [FlashAttention](https://github.com/bdashore3/flash-attention/releases/latest) on Windows:
 ```
 pip install exllamav2-X.X.X+cuXXX.torch2.X.X-cp3XX-cp3XX-win_amd64.whl
 pip install flash_attn-X.X.X+cuXXX.torch2.X.X-cp3XX-cp3XX-win_amd64.whl
