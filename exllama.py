@@ -39,18 +39,25 @@ class Loader:
                     cls._MODELS[str(parent / path.name)] = path
 
         models = list(cls._MODELS.keys())
+        caches = list(cls._CACHES.keys())
         default = models[0] if models else None
 
         return {
             "required": {
                 "model": (models, {"default": default}),
-                "cache_bits": ((4, 6, 8, 16), {"default": 16}),
+                "cache_bits": (caches, {"default": 16}),
                 "fast_tensors": ("BOOLEAN", {"default": True}),
                 "flash_attention": ("BOOLEAN", {"default": True}),
                 "max_seq_len": ("INT", {"default": 2048, "max": 2**20}),
             },
         }
 
+    _CACHES = {
+        4: lambda m: ExLlamaV2Cache_Q4(m, lazy=True),
+        6: lambda m: ExLlamaV2Cache_Q6(m, lazy=True),
+        8: lambda m: ExLlamaV2Cache_Q8(m, lazy=True),
+        16: lambda m: ExLlamaV2Cache(m, lazy=True),
+    }
     _MODELS = {}
     CATEGORY = _CATEGORY
     FUNCTION = "setup"
@@ -87,19 +94,10 @@ class Loader:
             return
 
         self.model = ExLlamaV2(self.config)
-        progress = ProgressBar(len(self.model.modules) + 1)
-
-        self.cache = (
-            ExLlamaV2Cache_Q4(self.model, lazy=True)
-            if self.cache_bits == 4
-            else ExLlamaV2Cache_Q6(self.model, lazy=True)
-            if self.cache_bits == 6
-            else ExLlamaV2Cache_Q8(self.model, lazy=True)
-            if self.cache_bits == 8
-            else ExLlamaV2Cache(self.model, lazy=True)
-        )
-
+        self.cache = __class__._CACHES[self.cache_bits](self.model)
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
+
+        progress = ProgressBar(len(self.model.modules))
         self.model.load_autosplit(self.cache, callback=lambda _, __: progress.update(1))
 
         self.generator = ExLlamaV2DynamicGenerator(
