@@ -48,7 +48,7 @@ class Loader:
                 "cache_bits": (caches, {"default": 16}),
                 "fast_tensors": ("BOOLEAN", {"default": True}),
                 "flash_attention": ("BOOLEAN", {"default": True}),
-                "max_seq_len": ("INT", {"default": 2048, "max": 2**20}),
+                "max_seq_len": ("INT", {"default": 2048, "max": 2**20, "step": 256}),
             },
         }
 
