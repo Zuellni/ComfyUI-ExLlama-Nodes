@@ -2,7 +2,27 @@ _CATEGORY = "Zuellni/Text"
 _MAPPING = "ZuellniText"
 
 
-class Previewer:
+class Message:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "role": (("system", "user", "assistant"),),
+                "content": ("STRING", {"multiline": True}),
+            },
+            "optional": {"messages": ("EXL_MESSAGES",)},
+        }
+
+    CATEGORY = _CATEGORY
+    FUNCTION = "append"
+    RETURN_NAMES = ("MESSAGES",)
+    RETURN_TYPES = ("EXL_MESSAGES",)
+
+    def append(self, role, content, messages=[]):
+        return (messages + [{"role": role, "content": content}],)
+
+
+class Preview:
     @classmethod
     def INPUT_TYPES(cls):
         return {"required": {"text": ("STRING", {"forceInput": True})}}
@@ -16,7 +36,7 @@ class Previewer:
         return {"ui": {"text": [text]}}
 
 
-class Replacer:
+class Replace:
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -43,13 +63,15 @@ class Replacer:
 
 
 NODE_CLASS_MAPPINGS = {
-    f"{_MAPPING}Previewer": Previewer,
-    f"{_MAPPING}Replacer": Replacer,
+    f"{_MAPPING}Message": Message,
+    f"{_MAPPING}Preview": Preview,
+    f"{_MAPPING}Replace": Replace,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    f"{_MAPPING}Previewer": "Preview",
-    f"{_MAPPING}Replacer": "Replace",
+    f"{_MAPPING}Message": "Message",
+    f"{_MAPPING}Preview": "Preview",
+    f"{_MAPPING}Replace": "Replace",
 }
 
 WEB_DIRECTORY = "."

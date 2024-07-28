@@ -4,7 +4,7 @@ import { ComfyWidgets } from "../../../scripts/widgets.js";
 app.registerExtension({
 	name: "ZuellniText",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.name === "ZuellniTextPreviewer") {
+		if (nodeData.name === "ZuellniTextPreview") {
 			const onExecuted = nodeType.prototype.onExecuted;
 
 			nodeType.prototype.onExecuted = function(message) {
