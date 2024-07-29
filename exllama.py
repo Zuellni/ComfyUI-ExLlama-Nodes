@@ -260,7 +260,6 @@ class Generator:
                 "seed": ("INT", {"max": 2**64 - 1}),
             },
             "optional": {"settings": ("EXL_SETTINGS",)},
-            "hidden": {"info": "EXTRA_PNGINFO", "id": "UNIQUE_ID"},
         }
 
     CATEGORY = _CATEGORY
@@ -277,8 +276,6 @@ class Generator:
         max_tokens,
         seed,
         settings=None,
-        info=None,
-        id=None,
     ):
         if unload:
             unload_all_models()
@@ -324,7 +321,7 @@ class Generator:
                     progress.update(1)
                     count += 1
 
-        output = "".join(chunks).strip()
+        output = "".join(chunks)
         total = round(time() - start, 2)
         speed = round(count / total, 2)
 
@@ -335,13 +332,6 @@ class Generator:
 
         if unload:
             model.unload()
-
-        if id and info and "workflow" in info:
-            nodes = info["workflow"]["nodes"]
-            node = next((n for n in nodes if str(n["id"]) == id), None)
-
-            if node:
-                node["widgets_values"] = [output]
 
         return (output,)
 

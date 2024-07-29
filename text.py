@@ -10,8 +10,8 @@ class Convert:
         return {
             "required": {
                 "text": ("STRING", {"forceInput": True}),
-                "strip": (("punctuation", "whitespace", "both", False),),
-                "case": (("lower", "upper", "capitalize", False),),
+                "strip": (("punctuation", "whitespace", "both", "none"),),
+                "case": (("lower", "upper", "capitalize", "title", "none"),),
             },
         }
 
@@ -23,9 +23,13 @@ class Convert:
     def convert(self, text, strip, case):
         if strip == "both":
             text = text.strip(string.punctuation + string.whitespace)
-        elif strip:
+            text = " ".join(text.split()).strip()
+        elif strip != "none":
             text = text.strip(getattr(string, strip))
-        if case:
+
+        if case == "title":
+            text = string.capwords(text)
+        elif case != "none":
             text = getattr(text, case)()
 
         return (text,)
