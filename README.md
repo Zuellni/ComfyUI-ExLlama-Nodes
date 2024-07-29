@@ -18,10 +18,10 @@ pip install flash_attn-X.X.X+cuXXX.torch2.X.X-cp3XX-cp3XX-win_amd64.whl
 Only EXL2, 4-bit GPTQ and FP16 models are supported. You can find them on [Hugging Face](https://huggingface.co).
 
 To use a model with the nodes, you should clone its repository with `git` or manually download all the files and place them in a folder in `models/llm`.
-For example, if you want to download the 6-bit [Llama-3-8B-Instruct](https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2), use the following command:
+For example, if you want to download the 4-bit [Llama-3.1-8B-Instruct](https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2), use the following command:
 ```
 git install lfs
-git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw models/llm/Llama-3-8B-Instruct-exl2-6.0bpw
+git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw models/llm/Llama-3-8B-Instruct-exl2-4.0bpw
 ```
 
 > [!TIP]
@@ -63,7 +63,7 @@ git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw mo
   <tr>
     <td></td>
     <td><i>add_assistant_role</i></td>
-    <td>Appends an assistant role to the formatted output.</td>
+    <td>Appends assistant role to the formatted output.</td>
   </tr>
   <tr>
     <td><b>Tokenizer</b></td>
@@ -106,6 +106,10 @@ git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw mo
     <td colspan="3" align="center"><b>Text Nodes</b></td>
   </tr>
   <tr>
+    <td><b>Convert</b></td>
+    <td colspan="2">Strips punctuation, whitespace, and changes case for input.</td>
+  </tr>
+  <tr>
     <td><b>Message</b></td>
     <td colspan="2">A message for the <code>Formatter</code> node. Can be chained to create a conversation.</td>
   </tr>
@@ -115,7 +119,11 @@ git clone https://huggingface.co/turboderp/Llama-3-8B-Instruct-exl2 -b 6.0bpw mo
   </tr>
   <tr>
     <td><b>Replace</b></td>
-    <td colspan="2">Replaces variable names in brackets, e.g. <code>[a]</code>, with their values.</td>
+    <td colspan="2">Replaces variable names in curly brackets, e.g. <code>{a}</code>, with their values.</td>
+  </tr>
+  <tr>
+    <td><b>String</b></td>
+    <td colspan="2">A string. That's it.</td>
   </tr>
 </table>
 
