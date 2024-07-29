@@ -1,5 +1,34 @@
+import string
+
 _CATEGORY = "Zuellni/Text"
 _MAPPING = "ZuellniText"
+
+
+class Convert:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "text": ("STRING", {"forceInput": True}),
+                "strip": (("punctuation", "whitespace", "both", False),),
+                "case": (("lower", "upper", "capitalize", False),),
+            },
+        }
+
+    CATEGORY = _CATEGORY
+    FUNCTION = "convert"
+    RETURN_NAMES = ("TEXT",)
+    RETURN_TYPES = ("STRING",)
+
+    def convert(self, text, strip, case):
+        if strip == "both":
+            text = text.strip(string.punctuation + string.whitespace)
+        elif strip:
+            text = text.strip(getattr(string, strip))
+        if case:
+            text = getattr(text, case)()
+
+        return (text,)
 
 
 class Message:
@@ -25,14 +54,19 @@ class Message:
 class Preview:
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"text": ("STRING", {"forceInput": True})}}
+        return {
+            "required": {
+                "text": ("STRING", {"forceInput": True}),
+                "output": ("STRING", {"multiline": True}),
+            },
+        }
 
     CATEGORY = _CATEGORY
     FUNCTION = "preview"
     OUTPUT_NODE = True
     RETURN_TYPES = ()
 
-    def preview(self, text):
+    def preview(self, text, output):
         return {"ui": {"text": [text]}}
 
 
@@ -40,12 +74,9 @@ class Replace:
     @classmethod
     def INPUT_TYPES(cls):
         return {
-            "required": {"text": ("STRING", {"multiline": True})},
-            "optional": {
-                "a": ("STRING", {"forceInput": True, "multiline": True}),
-                "b": ("STRING", {"forceInput": True, "multiline": True}),
-                "c": ("STRING", {"forceInput": True, "multiline": True}),
-                "d": ("STRING", {"forceInput": True, "multiline": True}),
+            "required": {
+                "count": ("INT", {"default": 1, "min": 1, "max": 26}),
+                "text": ("STRING", {"multiline": True}),
             },
         }
 
@@ -54,24 +85,44 @@ class Replace:
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def replace(self, text, **inputs):
-        for key, value in inputs.items():
-            if value:
-                text = text.replace(f"[{key}]", value)
+    def replace(self, count, text="", **kwargs):
+        for index in range(count):
+            key = chr(index + 97)
+
+            if key in kwargs and kwargs[key]:
+                text = text.replace(f"{{{key}}}", kwargs[key])
 
         return (text,)
 
 
+class String:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {"required": {"text": ("STRING", {"multiline": True})}}
+
+    CATEGORY = _CATEGORY
+    FUNCTION = "get"
+    RETURN_NAMES = ("TEXT",)
+    RETURN_TYPES = ("STRING",)
+
+    def get(self, text):
+        return (text,)
+
+
 NODE_CLASS_MAPPINGS = {
+    f"{_MAPPING}Convert": Convert,
     f"{_MAPPING}Message": Message,
     f"{_MAPPING}Preview": Preview,
     f"{_MAPPING}Replace": Replace,
+    f"{_MAPPING}String": String,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
+    f"{_MAPPING}Convert": "Convert",
     f"{_MAPPING}Message": "Message",
     f"{_MAPPING}Preview": "Preview",
     f"{_MAPPING}Replace": "Replace",
+    f"{_MAPPING}String": "String",
 }
 
 WEB_DIRECTORY = "."

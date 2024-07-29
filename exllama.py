@@ -179,7 +179,7 @@ class Tokenizer:
         return {
             "required": {
                 "model": ("EXL_MODEL",),
-                "text": ("STRING", {"forceInput": True, "multiline": True}),
+                "text": ("STRING", {"forceInput": True}),
                 "add_bos_token": ("BOOLEAN", {"default": True}),
                 "encode_special_tokens": ("BOOLEAN", {"default": True}),
             },
