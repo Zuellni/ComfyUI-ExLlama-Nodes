@@ -78,7 +78,7 @@ class Loader:
 
             if self.config.max_input_len > max_seq_len:
                 self.config.max_input_len = max_seq_len
-                self.config.max_attention_len = max_seq_len**2
+                self.config.max_attention_size = max_seq_len**2
 
         self.tokenizer = ExLlamaV2Tokenizer(self.config)
         return (self,)
