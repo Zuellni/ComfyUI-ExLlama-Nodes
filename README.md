@@ -28,7 +28,7 @@ git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw 
 > You can add your own `llm` path to the [extra_model_paths.yaml](https://github.com/comfyanonymous/ComfyUI/blob/master/extra_model_paths.yaml.example) file and put the models there instead.
 
 ## Nodes
-<table>
+<table width="100%">
   <tr>
     <td colspan="3" align="center"><b>ExLlama Nodes</b></td>
   </tr>
@@ -106,8 +106,8 @@ git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw 
     <td colspan="3" align="center"><b>Text Nodes</b></td>
   </tr>
   <tr>
-    <td><b>Convert</b></td>
-    <td colspan="2">Strips punctuation, whitespace, and changes case for input.</td>
+    <td><b>Clean</b></td>
+    <td colspan="2">Strips punctuation, fixes whitespace, and changes case for input text.</td>
   </tr>
   <tr>
     <td><b>Message</b></td>

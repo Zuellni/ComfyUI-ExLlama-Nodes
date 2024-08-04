@@ -50,7 +50,7 @@ class Loader:
                 "fast_tensors": ("BOOLEAN", {"default": True}),
                 "flash_attention": ("BOOLEAN", {"default": True}),
                 "max_seq_len": ("INT", {"default": 2048, "max": 2**20, "step": 256}),
-            },
+            }
         }
 
     _CACHES = {
@@ -127,7 +127,7 @@ class Formatter:
                 "model": ("EXL_MODEL",),
                 "messages": ("EXL_MESSAGES",),
                 "add_assistant_role": ("BOOLEAN", {"default": True}),
-            },
+            }
         }
 
     CATEGORY = _CATEGORY
@@ -182,7 +182,7 @@ class Tokenizer:
                 "text": ("STRING", {"forceInput": True}),
                 "add_bos_token": ("BOOLEAN", {"default": True}),
                 "encode_special_tokens": ("BOOLEAN", {"default": True}),
-            },
+            }
         }
 
     CATEGORY = _CATEGORY
@@ -214,7 +214,7 @@ class Settings:
                 "tfs": ("FLOAT", {"max": 1, "step": 0.01}),
                 "typical": ("FLOAT", {"max": 1, "step": 0.01}),
                 "temperature_last": ("BOOLEAN", {"default": True}),
-            },
+            }
         }
 
     CATEGORY = _CATEGORY

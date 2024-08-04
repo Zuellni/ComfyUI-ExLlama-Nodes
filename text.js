@@ -10,7 +10,7 @@ app.registerExtension({
 		const onExecuted = nodeType.prototype.onExecuted
 
 		if (nodeData.name == "ZuellniTextPreview") {
-			nodeType.prototype.onNodeCreated = function() {
+			nodeType.prototype.onNodeCreated = function () {
 				const output = this.widgets.find(w => w.name == "output")
 
 				if (output) {
@@ -24,13 +24,13 @@ app.registerExtension({
 				return onNodeCreated?.apply(this, arguments)
 			}
 
-			nodeType.prototype.onExecuted = function(message) {
+			nodeType.prototype.onExecuted = function (message) {
 				const output = this.widgets.find(w => w.name == "output")
 				output && (output.value = message.text)
 				return onExecuted?.apply(this, arguments)
 			}
 		} else if (nodeData.name == "ZuellniTextReplace") {
-			nodeType.prototype.onNodeCreated = function() {
+			nodeType.prototype.onNodeCreated = function () {
 				const count = this.widgets.find(w => w.name == "count")
 
 				if (count) {
@@ -41,7 +41,7 @@ app.registerExtension({
 				return onNodeCreated?.apply(this, arguments)
 			}
 
-			nodeType.prototype.onChanged = function(count) {
+			nodeType.prototype.onChanged = function (count) {
 				!this.inputs && (this.inputs = [])
 				const current = this.inputs.length
 

@@ -4,26 +4,26 @@ _CATEGORY = "Zuellni/Text"
 _MAPPING = "ZuellniText"
 
 
-class Convert:
+class Clean:
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "text": ("STRING", {"forceInput": True}),
-                "strip": (("punctuation", "whitespace", "both", "none"),),
+                "strip": (("both", "punctuation", "whitespace", "none"),),
                 "case": (("lower", "upper", "capitalize", "title", "none"),),
-            },
+                "fix": ("BOOLEAN", {"default": True}),
+            }
         }
 
     CATEGORY = _CATEGORY
-    FUNCTION = "convert"
+    FUNCTION = "clean"
     RETURN_NAMES = ("TEXT",)
     RETURN_TYPES = ("STRING",)
 
-    def convert(self, text, strip, case):
+    def clean(self, text, strip, case, fix):
         if strip == "both":
             text = text.strip(string.punctuation + string.whitespace)
-            text = " ".join(text.split()).strip()
         elif strip != "none":
             text = text.strip(getattr(string, strip))
 
@@ -31,6 +31,10 @@ class Convert:
             text = string.capwords(text)
         elif case != "none":
             text = getattr(text, case)()
+
+        if fix:
+            text = "\n".join([t for t in text.splitlines() if t])
+            text = " ".join(text.split())
 
         return (text,)
 
@@ -47,11 +51,11 @@ class Message:
         }
 
     CATEGORY = _CATEGORY
-    FUNCTION = "append"
+    FUNCTION = "add"
     RETURN_NAMES = ("MESSAGES",)
     RETURN_TYPES = ("EXL_MESSAGES",)
 
-    def append(self, role, content, messages=[]):
+    def add(self, role, content, messages=[]):
         return (messages + [{"role": role, "content": content}],)
 
 
@@ -62,7 +66,7 @@ class Preview:
             "required": {
                 "text": ("STRING", {"forceInput": True}),
                 "output": ("STRING", {"multiline": True}),
-            },
+            }
         }
 
     CATEGORY = _CATEGORY
@@ -81,7 +85,7 @@ class Replace:
             "required": {
                 "count": ("INT", {"default": 1, "min": 1, "max": 26}),
                 "text": ("STRING", {"multiline": True}),
-            },
+            }
         }
 
     CATEGORY = _CATEGORY
@@ -114,7 +118,7 @@ class String:
 
 
 NODE_CLASS_MAPPINGS = {
-    f"{_MAPPING}Convert": Convert,
+    f"{_MAPPING}Clean": Clean,
     f"{_MAPPING}Message": Message,
     f"{_MAPPING}Preview": Preview,
     f"{_MAPPING}Replace": Replace,
@@ -122,7 +126,7 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    f"{_MAPPING}Convert": "Convert",
+    f"{_MAPPING}Clean": "Clean",
     f"{_MAPPING}Message": "Message",
     f"{_MAPPING}Preview": "Preview",
     f"{_MAPPING}Replace": "Replace",
