@@ -4,8 +4,9 @@ A simple local text generator for [ComfyUI](https://github.com/comfyanonymous/Co
 ## Installation
 Clone the repository to `custom_nodes` and install the requirements:
 ```
-git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes custom_nodes/ComfyUI-ExLlamaV2-Nodes
-pip install -r custom_nodes/ComfyUI-ExLlamaV2-Nodes/requirements.txt
+cd custom_nodes
+git clone https://github.com/Zuellni/ComfyUI-ExLlama-Nodes
+pip install -r ComfyUI-ExLlama-Nodes/requirements.txt
 ```
 
 Use wheels for [ExLlamaV2](https://github.com/turboderp/exllamav2/releases/latest) and [FlashAttention](https://github.com/bdashore3/flash-attention/releases/latest) on Windows:
@@ -16,12 +17,13 @@ pip install flash_attn-X.X.X+cuXXX.torch2.X.X-cp3XX-cp3XX-win_amd64.whl
 
 ## Usage
 Only EXL2, 4-bit GPTQ and FP16 models are supported. You can find them on [Hugging Face](https://huggingface.co).
-
 To use a model with the nodes, you should clone its repository with `git` or manually download all the files and place them in a folder in `models/llm`.
-For example, if you want to download the 4-bit [Llama-3.1-8B-Instruct](https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2), use the following command:
+For example, if you'd like to download the 4-bit [Llama-3.1-8B-Instruct](https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2):
 ```
+cd models
+mkdir llm
 git install lfs
-git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw models/llm/Llama-3-8B-Instruct-exl2-4.0bpw
+git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw
 ```
 
 > [!TIP]
