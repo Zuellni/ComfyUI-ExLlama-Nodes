@@ -20,7 +20,7 @@ app.registerExtension({
 					output.inputEl.style.opacity = 0.7
 				}
 
-				this.setSize(this.computeSize());
+				this.setSize(this.computeSize())
 				return onNodeCreated?.apply(this, arguments)
 			}
 

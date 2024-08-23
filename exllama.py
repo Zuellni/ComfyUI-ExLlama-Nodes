@@ -24,7 +24,7 @@ from comfy.model_management import soft_empty_cache, unload_all_models
 from comfy.utils import ProgressBar
 from folder_paths import add_model_folder_path, get_folder_paths, models_dir
 
-_CATEGORY = "Zuellni/ExLlama"
+_CATEGORY = "zuellni/exllama"
 _MAPPING = "ZuellniExLlama"
 
 
@@ -49,7 +49,10 @@ class Loader:
                 "cache_bits": (caches, {"default": 4}),
                 "fast_tensors": ("BOOLEAN", {"default": True}),
                 "flash_attention": ("BOOLEAN", {"default": True}),
-                "max_seq_len": ("INT", {"default": 2048, "max": 2**20, "step": 256}),
+                "max_seq_len": (
+                    "INT",
+                    {"default": 2048, "min": 0, "max": 2**20, "step": 256},
+                ),
             }
         }
 
@@ -179,7 +182,7 @@ class Tokenizer:
         return {
             "required": {
                 "model": ("EXL_MODEL",),
-                "text": ("STRING", {"forceInput": True}),
+                "text": ("STRING", {"default": "", "forceInput": True}),
                 "add_bos_token": ("BOOLEAN", {"default": True}),
                 "encode_special_tokens": ("BOOLEAN", {"default": True}),
             }
@@ -205,14 +208,35 @@ class Settings:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "temperature": ("FLOAT", {"default": 1, "max": 10, "step": 0.01}),
-                "penalty": ("FLOAT", {"default": 1, "min": 1, "max": 10, "step": 0.01}),
-                "top_k": ("INT", {"default": 1, "max": 1000}),
-                "top_p": ("FLOAT", {"max": 1, "step": 0.01}),
-                "top_a": ("FLOAT", {"max": 1, "step": 0.01}),
-                "min_p": ("FLOAT", {"max": 1, "step": 0.01}),
-                "tfs": ("FLOAT", {"max": 1, "step": 0.01}),
-                "typical": ("FLOAT", {"max": 1, "step": 0.01}),
+                "temperature": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01},
+                ),
+                "penalty": (
+                    "FLOAT",
+                    {"default": 1.0, "min": 1.0, "max": 10.0, "step": 0.01},
+                ),
+                "top_k": ("INT", {"default": 1, "min": 0, "max": 1000}),
+                "top_p": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "top_a": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "min_p": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "tfs": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
+                "typical": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01},
+                ),
                 "temperature_last": ("BOOLEAN", {"default": True}),
             }
         }
@@ -256,8 +280,8 @@ class Generator:
                 "tokens": ("EXL_TOKENS",),
                 "unload": ("BOOLEAN", {"default": False}),
                 "stop_conditions": ("STRING", {"default": r'"\n"'}),
-                "max_tokens": ("INT", {"default": 128, "max": 2**20}),
-                "seed": ("INT", {"max": 2**64 - 1}),
+                "max_tokens": ("INT", {"default": 128, "min": 0, "max": 2**20}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 2**64 - 1}),
             },
             "optional": {"settings": ("EXL_SETTINGS",)},
         }

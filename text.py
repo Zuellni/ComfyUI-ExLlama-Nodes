@@ -1,6 +1,6 @@
 import string
 
-_CATEGORY = "Zuellni/Text"
+_CATEGORY = "zuellni/text"
 _MAPPING = "ZuellniText"
 
 
@@ -9,9 +9,15 @@ class Clean:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "text": ("STRING", {"forceInput": True}),
-                "strip": (("both", "punctuation", "whitespace", "none"),),
-                "case": (("lower", "upper", "capitalize", "title", "none"),),
+                "text": ("STRING", {"default": "", "forceInput": True}),
+                "strip": (
+                    ("both", "punctuation", "whitespace", "none"),
+                    {"default": "both"},
+                ),
+                "case": (
+                    ("lower", "upper", "capitalize", "title", "none"),
+                    {"default": "lower"},
+                ),
                 "fix": ("BOOLEAN", {"default": True}),
             }
         }
@@ -44,8 +50,8 @@ class Message:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "role": (("system", "user", "assistant"),),
-                "content": ("STRING", {"multiline": True}),
+                "role": (("system", "user", "assistant"), {"default": "system"}),
+                "content": ("STRING", {"default": "", "multiline": True}),
             },
             "optional": {"messages": ("EXL_MESSAGES",)},
         }
@@ -64,8 +70,8 @@ class Preview:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "text": ("STRING", {"forceInput": True}),
-                "output": ("STRING", {"multiline": True}),
+                "text": ("STRING", {"default": "", "forceInput": True}),
+                "output": ("STRING", {"default": "", "multiline": True}),
             }
         }
 
@@ -84,7 +90,7 @@ class Replace:
         return {
             "required": {
                 "count": ("INT", {"default": 1, "min": 1, "max": 26}),
-                "text": ("STRING", {"multiline": True}),
+                "text": ("STRING", {"default": "", "multiline": True}),
             }
         }
 
@@ -106,7 +112,7 @@ class Replace:
 class String:
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"text": ("STRING", {"multiline": True})}}
+        return {"required": {"text": ("STRING", {"default": "", "multiline": True})}}
 
     CATEGORY = _CATEGORY
     FUNCTION = "get"

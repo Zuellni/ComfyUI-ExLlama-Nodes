@@ -125,12 +125,12 @@ git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw
   </tr>
   <tr>
     <td><b>String</b></td>
-    <td colspan="2">A string. That's it.</td>
+    <td colspan="2">A string constant.</td>
   </tr>
 </table>
 
 ## Workflow
 An example workflow is embedded in the image below and can be opened in ComfyUI.
 
-![workflow](https://github.com/user-attachments/assets/359c0340-fe0e-4e69-a1b4-259c6ff5a142)
+![Workflow](https://github.com/user-attachments/assets/359c0340-fe0e-4e69-a1b4-259c6ff5a142)
 
