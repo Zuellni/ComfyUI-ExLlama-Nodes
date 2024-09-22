@@ -27,21 +27,29 @@ from folder_paths import add_model_folder_path, get_folder_paths, models_dir
 _CATEGORY = "zuellni/exllama"
 _MAPPING = "ZuellniExLlama"
 
-
 class Loader:
+    _input_info = None
+
     @classmethod
     def INPUT_TYPES(cls):
-        add_model_folder_path("llm", str(Path(models_dir) / "llm"))
+        def get_input_info(cls):
+            add_model_folder_path("llm", str(Path(models_dir) / "llm"))
 
-        for folder in get_folder_paths("llm"):
-            for path in Path(folder).rglob("*/"):
-                if (path / "config.json").is_file():
-                    parent = path.relative_to(folder).parent
-                    cls._MODELS[str(parent / path.name)] = path
+            for folder in get_folder_paths("llm"):
+                for path in Path(folder).rglob("*/"):
+                    if (path / "config.json").is_file():
+                        parent = path.relative_to(folder).parent
+                        cls._MODELS[str(parent / path.name)] = path
 
-        models = list(cls._MODELS.keys())
-        caches = list(cls._CACHES.keys())
-        default = models[0] if models else None
+            models = list(cls._MODELS.keys())
+            caches = list(cls._CACHES.keys())
+            default = models[0] if models else None
+
+            return models, caches, default
+
+        if Loader._input_info is None:
+            Loader._input_info = get_input_info(cls)
+        models, caches, default = Loader._input_info
 
         return {
             "required": {
