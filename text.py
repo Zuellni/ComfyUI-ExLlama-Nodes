@@ -71,6 +71,7 @@ class Preview:
         return {
             "required": {
                 "text": ("STRING", {"default": "", "forceInput": True}),
+                "print_to_console": ("BOOLEAN", {"default": False}),
                 "output": ("STRING", {"default": "", "multiline": True}),
             }
         }
@@ -80,7 +81,8 @@ class Preview:
     OUTPUT_NODE = True
     RETURN_TYPES = ()
 
-    def preview(self, text, output):
+    def preview(self, text, print_to_console, output):
+        print_to_console and print(text)
         return {"ui": {"text": [text]}}
 
 

@@ -45,11 +45,6 @@ git clone https://huggingface.co/turboderp/Llama-3.1-8B-Instruct-exl2 -b 4.0bpw
   </tr>
   <tr>
     <td></td>
-    <td><i>fast_tensors</i></td>
-    <td>Enabling reduces RAM usage and speeds up model loading.</td>
-  </tr>
-  <tr>
-    <td></td>
     <td ><i>flash_attention</i></td>
     <td>Enabling reduces VRAM usage, not supported on cards with compute capability lower than <code>8.0</code>.</td>
   </tr>

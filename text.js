@@ -3,7 +3,7 @@ import { app } from "../../../scripts/app.js"
 app.registerExtension({
 	name: "ZuellniText",
 	async beforeRegisterNodeDef(nodeType, nodeData, app) {
-		if (nodeData.category != "Zuellni/Text")
+		if (nodeData.category != "zuellni/text")
 			return
 
 		const onNodeCreated = nodeType.prototype.onNodeCreated

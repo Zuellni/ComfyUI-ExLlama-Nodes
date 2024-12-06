@@ -27,12 +27,11 @@ from folder_paths import add_model_folder_path, get_folder_paths, models_dir
 _CATEGORY = "zuellni/exllama"
 _MAPPING = "ZuellniExLlama"
 
-class Loader:
-    _input_info = None
 
+class Loader:
     @classmethod
     def INPUT_TYPES(cls):
-        def get_input_info(cls):
+        if not cls._MODELS:
             add_model_folder_path("llm", str(Path(models_dir) / "llm"))
 
             for folder in get_folder_paths("llm"):
@@ -41,21 +40,14 @@ class Loader:
                         parent = path.relative_to(folder).parent
                         cls._MODELS[str(parent / path.name)] = path
 
-            models = list(cls._MODELS.keys())
-            caches = list(cls._CACHES.keys())
-            default = models[0] if models else None
-
-            return models, caches, default
-
-        if Loader._input_info is None:
-            Loader._input_info = get_input_info(cls)
-        models, caches, default = Loader._input_info
+        models = list(cls._MODELS.keys())
+        caches = list(cls._CACHES.keys())
+        default = models[0] if models else None
 
         return {
             "required": {
                 "model": (models, {"default": default}),
                 "cache_bits": (caches, {"default": 4}),
-                "fast_tensors": ("BOOLEAN", {"default": True}),
                 "flash_attention": ("BOOLEAN", {"default": True}),
                 "max_seq_len": (
                     "INT",
@@ -76,12 +68,11 @@ class Loader:
     RETURN_NAMES = ("MODEL",)
     RETURN_TYPES = ("EXL_MODEL",)
 
-    def setup(self, model, cache_bits, fast_tensors, flash_attention, max_seq_len):
+    def setup(self, model, cache_bits, flash_attention, max_seq_len):
         self.unload()
         self.cache_bits = cache_bits
 
         self.config = ExLlamaV2Config(__class__._MODELS[model])
-        self.config.fasttensors = fast_tensors
         self.config.no_flash_attn = not flash_attention
 
         if max_seq_len:
@@ -328,7 +319,7 @@ class Generator:
 
         if not settings:
             settings = ExLlamaV2Sampler.Settings()
-            settings.greedy()
+            settings = settings.greedy()
 
         job = ExLlamaV2DynamicJob(
             input_ids=tokens,
